@@ -1,4 +1,4 @@
-# Edge Wallet
+# SatoshiWallet
 
 ## A multicurrency mobile wallet for Bitcoin, Bitcoin Cash, Ethereum, Dash, Litecoin, Ripple/XRP and Monero
 
