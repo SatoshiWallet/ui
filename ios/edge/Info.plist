@@ -86,7 +86,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>This allows you to securely and conveniently access your $(PRODUCT_NAME) wallet</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>$(PRODUCT_NAME) uses your location to find the nearest ATM. This info is anonymous and not shared with 3rd parties.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) uses photos to retrieve QR Code images.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
