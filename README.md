@@ -2,7 +2,7 @@
 
 ## A multicurrency mobile wallet for Bitcoin, Bitcoin Cash, Ethereum, Dash, Litecoin, Ripple/XRP and Monero
 
-![Edge Wallet Screenshots](https://cdn-images-1.medium.com/max/1600/1*xMZMuK0_jGNZNzduvggsdw.png)
+![Edge Wallet Screenshots](https://satoshisolutions.io/satoshiwallet/wp-content/uploads/sites/8/2019/03/screens.png)
 
 Edge Wallet is:
 
