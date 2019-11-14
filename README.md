@@ -4,7 +4,7 @@
 
 ![Edge Wallet Screenshots](https://satoshisolutions.io/satoshiwallet/wp-content/uploads/sites/8/2019/03/screens.png)
 
-Edge Wallet is:
+SatoshiWallet is:
 
 * simple
 * secure
@@ -19,7 +19,7 @@ Edge Wallet is:
 
 ## Requirements
 
-Edge is known to build with this exact tool set. Updated versions of these toolsets may break the build or app. If you have issues, try mirroring these exact versions.
+SatoshiWallet is a fork of Edge and rquires Edge components to run. It is known to build with this exact tool set. Updated versions of these toolsets may break the build or app. If you have issues, try mirroring these exact versions.
 
 * MacOS High Sierra 10.13.3
 * Xcode 10.1
@@ -83,7 +83,7 @@ For best results, please consider using the following versions (up-to-date as of
 
 ### Add API key in env.json
 
-A public API key is built into the edge-core-js which can be used to build and test the Edge app. This key is severely rate limited and should not be used for production. For production use, get an API key by emailing info@edge.app. 
+This app requires an API key for Edge services to run. A public API key is built into the edge-core-js which can be used to build and test the Edge app. This key is severely rate limited and should not be used for production.
 
 Copy the `env.example.json` to `env.json` and change the `AIRBITZ_API_KEY` to the API key you received from Edge. To use the public API key, leave `AIRBITZ_API_KEY` blank. 
 
