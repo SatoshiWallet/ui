@@ -6,7 +6,7 @@ import _ from 'lodash'
 import * as Constants from '../../constants/indexConstants.js'
 import { CORE_DEFAULTS, LOCAL_ACCOUNT_DEFAULTS, SYNCED_ACCOUNT_DEFAULTS } from '../../modules/Core/Account/settings.js'
 import type { Action } from '../../types/reduxTypes.js'
-import type { CustomTokenInfo } from '../../types/types.js'
+import type { CustomTokenInfo, MostRecentWallet } from '../../types/types.js'
 import { spendingLimits } from '../SpendingLimitsReducer.js'
 
 export const initialState = {
@@ -30,7 +30,7 @@ export const initialState = {
   confirmPasswordError: '',
   sendLogsStatus: Constants.REQUEST_STATUS.PENDING,
   isAccountBalanceVisible: true,
-  isWalletFiatBalanceVisible: false,
+  mostRecentWallets: [],
   spendingLimits: {
     transaction: {
       isEnabled: false,
@@ -79,6 +79,7 @@ export type SettingsState = {
   isTouchSupported: boolean,
   loginStatus: boolean | null,
   merchantMode: boolean,
+  preferredSwapPluginId: string | void,
   otpKey: string | null,
   otpResetPending: boolean,
   otpMode: boolean,
@@ -93,7 +94,7 @@ export type SettingsState = {
   confirmPasswordError: string,
   sendLogsStatus: string,
   isAccountBalanceVisible: boolean,
-  isWalletFiatBalanceVisible: boolean,
+  mostRecentWallets: Array<MostRecentWallet>,
   spendingLimits: {
     transaction: {
       isEnabled: boolean,
@@ -203,6 +204,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
         defaultFiat,
         defaultIsoFiat,
         merchantMode,
+        preferredSwapPluginId,
         countryCode,
         customTokens,
         bluetoothMode,
@@ -212,7 +214,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
         denominationKeys,
         customTokensSettings,
         isAccountBalanceVisible,
-        isWalletFiatBalanceVisible,
+        mostRecentWallets,
         passwordRecoveryRemindersShown,
         developerModeOn
       } = action.data
@@ -228,6 +230,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
         defaultFiat,
         defaultIsoFiat,
         merchantMode,
+        preferredSwapPluginId: preferredSwapPluginId === '' ? undefined : preferredSwapPluginId,
         customTokens,
         countryCode,
         bluetoothMode,
@@ -236,7 +239,7 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
         otpMode,
         otpResetDate: account.otpResetDate,
         isAccountBalanceVisible,
-        isWalletFiatBalanceVisible,
+        mostRecentWallets,
         passwordRecoveryRemindersShown,
         developerModeOn
       }
@@ -442,7 +445,6 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
     }
 
     case 'UI/SETTINGS/SET_AUTO_LOGOUT_TIME': {
-      if (!action.data) throw new Error('Invalid action')
       const { autoLogoutTimeInSeconds } = action.data
       return {
         ...state,
@@ -497,6 +499,11 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
+    case 'UI/SETTINGS/SET_PREFERRED_SWAP_PLUGIN': {
+      const pluginId = action.data
+      return { ...state, preferredSwapPluginId: pluginId }
+    }
+
     case 'UI/SETTINGS/SET_BLUETOOTH_MODE': {
       if (!action.data) throw new Error('Invalid action')
       const { bluetoothMode } = action.data
@@ -547,19 +554,19 @@ export const settingsLegacy = (state: SettingsState = initialState, action: Acti
       }
     }
 
+    case 'UI/SETTINGS/SET_MOST_RECENT_WALLETS': {
+      if (!action.data) throw new Error('Invalid action')
+      return {
+        ...state,
+        mostRecentWallets: action.data.mostRecentWallets
+      }
+    }
+
     case 'UI/SETTINGS/SET_ACCOUNT_BALANCE_VISIBILITY': {
       if (!action.data) throw new Error('Invalid action')
       return {
         ...state,
         isAccountBalanceVisible: action.data.isAccountBalanceVisible
-      }
-    }
-
-    case 'UPDATE_WALLET_FIAT_BALANCE_VISIBILITY': {
-      if (!action.data) throw new Error('Invalid action')
-      return {
-        ...state,
-        isWalletFiatBalanceVisible: action.data.isWalletFiatBalanceVisible
       }
     }
 

@@ -1,6 +1,6 @@
 // @flow
 
-import type { GuiTouchIdInfo } from '../../types/types.js'
+import type { GuiTouchIdInfo, MostRecentWallet } from '../../types/types.js'
 
 export const updateSettings = (settings: Object) => ({
   type: 'UI/SETTINGS/UPDATE_SETTINGS',
@@ -20,11 +20,6 @@ export const setPINMode = (pinMode: boolean) => ({
 export const setOTPMode = (otpMode: boolean) => ({
   type: 'UI/SETTINGS/SET_OTP_MODE',
   data: { otpMode }
-})
-
-export const setAutoLogoutTimeInSeconds = (autoLogoutTimeInSeconds: number) => ({
-  type: 'UI/SETTINGS/SET_AUTO_LOGOUT_TIME',
-  data: { autoLogoutTimeInSeconds }
 })
 
 export const setDefaultFiat = (defaultFiat: string) => ({
@@ -80,7 +75,7 @@ export const setAccountBalanceVisibility = (isAccountBalanceVisible: boolean) =>
   data: { isAccountBalanceVisible }
 })
 
-export const updateWalletFiatBalanceVisibility = (isWalletFiatBalanceVisible: boolean) => ({
-  type: 'UPDATE_WALLET_FIAT_BALANCE_VISIBILITY',
-  data: { isWalletFiatBalanceVisible }
+export const updateMostRecentWallets = (mostRecentWallets: Array<MostRecentWallet>) => ({
+  type: 'UI/SETTINGS/SET_MOST_RECENT_WALLETS',
+  data: { mostRecentWallets }
 })

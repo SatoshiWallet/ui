@@ -2,6 +2,7 @@
 
 import { Platform, StyleSheet } from 'react-native'
 
+import { dayText } from '../../styles/common/textStyles.js'
 import THEME from '../../theme/variables/airbitz'
 import { PLATFORM } from '../../theme/variables/platform.js'
 import { scale, scaleH } from '../../util/scaling.js'
@@ -44,19 +45,24 @@ export const styles = {
     marginLeft: scale(16)
   },
   donePlusContainer: {
-    minWidth: scale(132),
-    height: scale(50)
+    width: scale(132),
+    height: scale(50),
+    marginRight: scale(7)
   },
   donePlusSortable: {
-    alignItems: 'flex-end',
-    marginRight: scale(30)
+    alignItems: 'flex-end'
   },
   plusContainer: {
     position: 'absolute',
     justifyContent: 'space-between',
     alignItems: 'center',
     height: scale(50),
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '100%'
+  },
+  plusSpacer: {
+    flex: 1,
+    width: '100%'
   },
   fiatToggleWrap: {
     width: scale(92),
@@ -66,7 +72,7 @@ export const styles = {
   },
   walletsBoxHeaderAddWallet: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     top: 0,
     left: 0,
@@ -143,7 +149,7 @@ export const styles = {
   },
   sortableWalletListRow: {
     width: PLATFORM.deviceWidth,
-    height: scale(70),
+    height: scale(60),
     backgroundColor: THEME.COLORS.WHITE,
     paddingVertical: scale(6),
     paddingHorizontal: scale(20),
@@ -159,7 +165,7 @@ export const styles = {
   rowContainer: {
     padding: scale(6),
     paddingLeft: scale(8),
-    height: scale(60),
+    height: scale(106),
     backgroundColor: THEME.COLORS.WHITE,
     borderBottomWidth: scale(1),
     borderBottomColor: THEME.COLORS.GRAY_3
@@ -178,6 +184,7 @@ export const styles = {
   },
   rowNameTextWrap: {
     flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
     marginRight: scale(5)
   },
@@ -190,18 +197,18 @@ export const styles = {
   },
   rowCurrencyLogoAndroid: {
     position: 'absolute',
-    top: 14,
+    top: 8,
     left: 0,
     right: 0,
     bottom: 0,
-    height: scale(22),
-    width: scale(22),
+    height: scale(23),
+    width: scale(23),
     marginRight: scale(12),
     marginLeft: scale(3),
     resizeMode: 'contain',
     alignSelf: 'center'
   },
-  rowCurrencyOverlaySize: scale(22),
+  rowCurrencyOverlaySize: scale(23.3),
   rowCurrencyLogoIOS: {
     height: scale(22),
     width: scale(26),
@@ -334,7 +341,7 @@ export const styles = {
   tokenRowContainer: {
     padding: scale(6),
     paddingLeft: scale(8),
-    height: scale(50),
+    height: scale(106),
     backgroundColor: THEME.COLORS.GRAY_4,
     borderBottomWidth: 1,
     borderColor: THEME.COLORS.GRAY_3
@@ -393,11 +400,116 @@ export const styles = {
   walletListProgressDropdownBottomText: {
     color: THEME.COLORS.WHITE
   },
-
   progressBarSpacer: {
     height: scale(3),
     backgroundColor: '#E9E9EF'
+  },
+
+  walletDetailsContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    marginTop: scale(5)
+  },
+  walletDetailsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  walletDetailsRowLine: {
+    height: 1,
+    borderColor: 'rgba(14, 75, 117, 0.5)',
+    borderBottomWidth: 1,
+    marginTop: scale(12),
+    marginBottom: scale(9)
+  },
+  walletDetailsRowCurrency: {
+    flex: 1,
+    fontSize: scale(18)
+  },
+  walletDetailsRowValue: {
+    textAlign: 'right',
+    fontSize: scale(18),
+    color: THEME.COLORS.GRAY_1
+  },
+  walletDetailsRowName: {
+    flex: 1,
+    fontSize: scale(14),
+    color: THEME.COLORS.SECONDARY
+  },
+  walletDetailsRowFiat: {
+    fontSize: scale(14),
+    textAlign: 'right',
+    color: THEME.COLORS.SECONDARY
+  },
+  walletDetailsRowExchangeRate: {
+    fontSize: scale(14),
+    textAlign: 'left',
+    color: THEME.COLORS.GRAY_1
+  },
+  walletDetailsRowDifferenceNeutral: {
+    fontSize: scale(14),
+    textAlign: 'right',
+    color: THEME.COLORS.SECONDARY
+  },
+  walletDetailsRowDifferencePositive: {
+    fontSize: scale(14),
+    textAlign: 'right',
+    fontWeight: '400',
+    color: '#77C513'
+  },
+  walletDetailsRowDifferenceNegative: {
+    fontSize: scale(14),
+    textAlign: 'right',
+    fontWeight: '400',
+    color: '#E85466'
+  },
+  walletDetailsFiatBalanceRow: {
+    flexDirection: 'row'
+  },
+  walletDetailsExchangeRow: {
+    flexDirection: 'row',
+    flex: 1
+  },
+
+  // Promo area:
+  promoArea: {
+    padding: THEME.rem(0.5)
+  },
+  promoCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: THEME.COLORS.WHITE,
+    margin: THEME.rem(0.5),
+    padding: THEME.rem(0.5)
+  },
+  promoIcon: {
+    width: THEME.rem(2),
+    height: THEME.rem(2),
+    margin: THEME.rem(0.5)
+  },
+  promoText: {
+    ...dayText(),
+    flexGrow: 1,
+    margin: THEME.rem(0.5)
+  },
+  promoClose: {
+    padding: THEME.rem(0.5)
   }
 }
+
+export const customWalletListOptionsStyles = StyleSheet.create({
+  icon: {
+    fontSize: scale(21),
+    fontWeight: '200',
+    position: 'relative',
+    top: 6
+  },
+  menuIconWrap: {
+    width: scale(46),
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  }
+})
 
 export default StyleSheet.create(styles)

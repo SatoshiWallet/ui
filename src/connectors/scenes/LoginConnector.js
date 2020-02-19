@@ -11,16 +11,10 @@ import type { Dispatch, State } from '../../types/reduxTypes.js'
 const mapStateToProps = (state: State) => ({
   context: CORE_SELECTORS.getContext(state),
   account: CORE_SELECTORS.getAccount(state),
-  username: CORE_SELECTORS.getNextUsername(state),
+  username: state.nextUsername == null ? '' : state.nextUsername,
   recoveryLogin: state.core.deepLinking.passwordRecoveryLink
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  dispatch,
-  addUsernames: usernames =>
-    dispatch({
-      type: 'CORE/CONTEXT/ADD_USERNAMES',
-      data: { usernames }
-    }),
   showSendLogsModal: () => dispatch(showSendLogsModal()),
   initializeAccount: (account, touchIdInfo) => dispatch(initializeAccount(account, touchIdInfo))
 })

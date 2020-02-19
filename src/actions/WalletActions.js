@@ -17,7 +17,7 @@ import { updateWalletsRequest } from '../modules/Core/Wallets/action.js'
 import { getEnabledTokensFromFile, setEnabledTokens, updateEnabledTokens } from '../modules/Core/Wallets/EnabledTokens.js'
 import { updateExchangeRates } from '../modules/ExchangeRates/action.js'
 import * as SETTINGS_SELECTORS from '../modules/Settings/selectors'
-import { updateSettings } from '../modules/Settings/SettingsActions'
+import { updateMostRecentWallets, updateSettings } from '../modules/Settings/SettingsActions'
 import { Icon } from '../modules/UI/components/Icon/Icon.ui.js'
 import * as UI_SELECTORS from '../modules/UI/selectors.js'
 import type { Dispatch, GetState } from '../types/reduxTypes.js'
@@ -41,6 +41,7 @@ export const refreshReceiveAddressRequest = (walletId: string) => (dispatch: Dis
 }
 
 export const selectWallet = (walletId: string, currencyCode: string, from?: string) => (dispatch: Dispatch, getState: GetState) => {
+  dispatch(updateMostRecentWalletsSelected(walletId, currencyCode))
   if (currencyCode === 'EOS') {
     // EOS needs different path in case not activated yet
     dispatch(selectEOSWallet(walletId, currencyCode, from))
@@ -115,7 +116,6 @@ export const selectEOSWallet = (walletId: string, currencyCode: string, from?: s
 
 export const selectWalletFromModal = (walletId: string, currencyCode: string) => (dispatch: Dispatch, getState: GetState) => {
   dispatch(selectWallet(walletId, currencyCode))
-  dispatch({ type: 'DISABLE_WALLET_LIST_MODAL_VISIBILITY' })
   dispatch(refreshReceiveAddressRequest(walletId))
 }
 
@@ -167,11 +167,6 @@ export const refreshWallet = (walletId: string) => (dispatch: Dispatch, getState
 }
 
 export const upsertWallets = (wallets: Array<EdgeCurrencyWallet>) => (dispatch: Dispatch, getState: GetState) => {
-  const state = getState()
-  const loginStatus = SETTINGS_SELECTORS.getLoginStatus(state)
-  if (!loginStatus) {
-    dispatch({ type: 'LOGGED_OUT' })
-  }
   dispatch(updateExchangeRates())
   dispatch({
     type: 'UI/WALLETS/UPSERT_WALLETS',
@@ -395,8 +390,8 @@ export const deleteCustomToken = (walletId: string, currencyCode: string) => (di
   dispatch({ type: 'DELETE_CUSTOM_TOKEN_START' })
   SETTINGS_API.getSyncedSettings(account)
     .then(settings => {
-      settings[currencyCode].isVisible = false // remove top-level property. We should migrate away from it eventually anyway
-      localSettings[currencyCode].isVisible = false
+      if (settings[currencyCode]) settings[currencyCode].isVisible = false // remove top-level property. We should migrate away from it eventually anyway
+      if (localSettings[currencyCode]) localSettings[currencyCode].isVisible = false
       const customTokensOnFile = [...settings.customTokens] // should use '|| []' as catch-all or no?
       const customTokensOnLocal = [...localSettings.customTokens]
       const indexOfToken = _.findIndex(customTokensOnFile, item => item.currencyCode === currencyCode)
@@ -463,5 +458,47 @@ export const updateWalletLoadingProgress = (walletId: string, newWalletProgress:
   dispatch({
     type: 'UPDATE_WALLET_LOADING_PROGRESS',
     data
+  })
+}
+
+export const updateMostRecentWalletsSelected = (walletId: string, currencyCode: string) => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const { mostRecentWallets } = state.ui.settings
+  const currentMostRecentWallets = mostRecentWallets.filter(wallet => {
+    return wallet.id !== walletId || wallet.currencyCode !== currencyCode
+  })
+  if (currentMostRecentWallets.length === 100) {
+    currentMostRecentWallets.pop()
+  }
+  currentMostRecentWallets.unshift({ id: walletId, currencyCode })
+
+  SETTINGS_API.setMostRecentWalletsSelected(CORE_SELECTORS.getAccount(state), currentMostRecentWallets)
+    .then(() => {
+      dispatch(updateMostRecentWallets(currentMostRecentWallets))
+    })
+    .catch(showError)
+}
+
+export const removeMostRecentWallet = (walletId: string, currencyCode: string) => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const { mostRecentWallets } = state.ui.settings
+  const currentMostRecentWallets = mostRecentWallets.filter(wallet => wallet.id !== walletId || wallet.currencyCode !== currencyCode)
+  SETTINGS_API.setMostRecentWalletsSelected(CORE_SELECTORS.getAccount(state), currentMostRecentWallets)
+    .then(() => {
+      dispatch(updateMostRecentWallets(currentMostRecentWallets))
+    })
+    .catch(showError)
+}
+
+export const checkEnabledTokensArray = (walletId: string, newEnabledTokens: Array<string>) => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const wallet = UI_SELECTORS.getWallet(state, walletId)
+  const oldEnabledTokens = wallet.enabledTokens
+
+  oldEnabledTokens.forEach(oldToken => {
+    const checkedToken = newEnabledTokens.find(newToken => newToken === oldToken)
+    if (!checkedToken) {
+      dispatch(removeMostRecentWallet(walletId, oldToken))
+    }
   })
 }

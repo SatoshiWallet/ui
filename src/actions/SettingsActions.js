@@ -1,5 +1,6 @@
 // @flow
 
+import { downgradeDisklet } from 'disklet'
 import { createInputModal, createSecureTextModal, createYesNoModal } from 'edge-components'
 import type { EdgeAccount } from 'edge-core-js'
 import { disableTouchId, enableTouchId } from 'edge-login-ui-rn'
@@ -43,16 +44,16 @@ export const setPINModeRequest = (pinMode: boolean) => (dispatch: Dispatch, getS
     .catch(showError)
 }
 
-export const setAutoLogoutTimeInMinutesRequest = (autoLogoutTimeInMinutes: number) => {
-  const autoLogoutTimeInSeconds = autoLogoutTimeInMinutes * 60
-  return setAutoLogoutTimeInSecondsRequest(autoLogoutTimeInSeconds)
-}
-
 export const setAutoLogoutTimeInSecondsRequest = (autoLogoutTimeInSeconds: number) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
   ACCOUNT_SETTINGS.setAutoLogoutTimeInSecondsRequest(account, autoLogoutTimeInSeconds)
-    .then(() => dispatch(SETTINGS_ACTIONS.setAutoLogoutTimeInSeconds(autoLogoutTimeInSeconds)))
+    .then(() =>
+      dispatch({
+        type: 'UI/SETTINGS/SET_AUTO_LOGOUT_TIME',
+        data: { autoLogoutTimeInSeconds }
+      })
+    )
     .catch(showError)
 }
 
@@ -103,6 +104,14 @@ export const setMerchantModeRequest = (merchantMode: boolean) => (dispatch: Disp
     .catch(showError)
 }
 
+export const setPreferredSwapPluginId = (pluginId: string | void) => (dispatch: Dispatch, getState: GetState) => {
+  const state = getState()
+  const account = CORE_SELECTORS.getAccount(state)
+  ACCOUNT_SETTINGS.setPreferredSwapPluginId(account, pluginId)
+    .then(() => dispatch({ type: 'UI/SETTINGS/SET_PREFERRED_SWAP_PLUGIN', data: pluginId }))
+    .catch(showError)
+}
+
 export const setBluetoothModeRequest = (bluetoothMode: boolean) => (dispatch: Dispatch, getState: GetState) => {
   const state = getState()
   const account = CORE_SELECTORS.getAccount(state)
@@ -139,7 +148,8 @@ export const setDenominationKeyRequest = (currencyCode: string, denominationKey:
 
 // touch id interaction
 export const updateTouchIdEnabled = (arg: boolean, account: EdgeAccount) => async (dispatch: Dispatch, getState: GetState) => {
-  const folder = CORE_SELECTORS.getFolder(getState())
+  const state = getState()
+  const folder = downgradeDisklet(state.core.disklet)
   // dispatch the update for the new state for
   dispatch(SETTINGS_ACTIONS.updateTouchIdEnabled(arg))
   if (arg) {

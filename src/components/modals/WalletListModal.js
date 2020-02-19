@@ -5,16 +5,20 @@ import React, { Component, Fragment } from 'react'
 import { Dimensions, FlatList, View } from 'react-native'
 
 import { CryptoExchangeCreateWalletRow } from '../../components/common/CryptoExchangeCreateWalletRow.js'
-import { CryptoExchangeWalletListRow } from '../../components/common/CryptoExchangeWalletListRow.js'
+import { CryptoExchangeWalletListTokenRowConnected as CryptoExchangeWalletListRow } from '../../connectors/components/CryptoExchangeWalletListRowConnector.js'
 import s from '../../locales/strings.js'
 import FormattedText from '../../modules/UI/components/FormattedText/index'
 import { CryptoExchangeWalletSelectorModalStyles as styles } from '../../styles/indexStyles'
-import type { State } from '../../types/reduxTypes.js'
-import type { GuiWallet } from '../../types/types.js'
+import type { GuiWallet, MostRecentWallet } from '../../types/types.js'
 import { scale } from '../../util/scaling.js'
 import { type AirshipBridge, AirshipModal } from './modalParts.js'
 
-type Props = {
+export type StateProps = {
+  activeWalletIds: Array<string>,
+  mostRecentWallets: Array<MostRecentWallet>
+}
+
+type OwnProps = {
   bridge: AirshipBridge<GuiWallet | Object | null>,
   wallets: Array<GuiWallet>,
   existingWalletToFilterId?: string,
@@ -23,7 +27,6 @@ type Props = {
   excludedCurrencyCode: Array<string>,
   supportedWalletTypes: Array<Object>,
   showWalletCreators: boolean,
-  state: State,
   excludedTokens: Array<string>,
   noWalletCodes: Array<string>,
   disableZeroBalance: boolean
@@ -31,7 +34,10 @@ type Props = {
 
 type Record = {
   walletItem: GuiWallet | null,
-  supportedWalletType: Object | null
+  supportedWalletType: Object | null,
+  mostRecentUsed?: boolean,
+  currencyCode?: string | null,
+  headerLabel?: string
 }
 
 type FlatListItem = {
@@ -46,6 +52,8 @@ type LocalState = {
   totalWalletsToAdd: number
 }
 
+type Props = StateProps & OwnProps
+
 export class WalletListModal extends Component<Props, LocalState> {
   constructor (props: Props) {
     super(props)
@@ -53,17 +61,19 @@ export class WalletListModal extends Component<Props, LocalState> {
     let i = 0
     let totalCurrenciesAndTokens = 0
     let totalWalletsToAdd = 0
-    for (i; i < this.props.wallets.length; i++) {
-      const wallet = this.props.wallets[i]
-      if (wallet.type === 'wallet:fio') continue
-      const record = {
-        walletItem: wallet,
-        supportedWalletType: null
-      }
-      records.push(record)
-      totalCurrenciesAndTokens++
-      if (wallet.enabledTokens.length) {
-        totalCurrenciesAndTokens = totalCurrenciesAndTokens + wallet.enabledTokens.length
+    for (i; i < this.props.activeWalletIds.length; i++) {
+      const wallet = this.props.wallets.find(wallet => wallet.id === this.props.activeWalletIds[i])
+      if (wallet) {
+        if (wallet.type === 'wallet:fio') continue
+        const record = {
+          walletItem: wallet,
+          supportedWalletType: null
+        }
+        records.push(record)
+        totalCurrenciesAndTokens++
+        if (wallet.enabledTokens.length) {
+          totalCurrenciesAndTokens = totalCurrenciesAndTokens + wallet.enabledTokens.length
+        }
       }
     }
     for (i = 0; i < this.props.supportedWalletTypes.length; i++) {
@@ -115,9 +125,12 @@ export class WalletListModal extends Component<Props, LocalState> {
           excludedCurrencyCode={[excludeCurrency]}
           excludedTokens={this.props.excludedTokens}
           onTokenPress={this.selectTokenWallet}
-          state={this.props.state}
           isWalletFiatBalanceVisible
           disableZeroBalance={this.props.disableZeroBalance}
+          isMostRecentWallet={item.mostRecentUsed}
+          searchFilter={this.state.input}
+          currencyCodeFilter={item.currencyCode || ''}
+          headerLabel={item.headerLabel}
         />
       )
     }
@@ -145,23 +158,85 @@ export class WalletListModal extends Component<Props, LocalState> {
       input
     })
   }
-  filterRecords = () => {
+  setWalletRecordsLabel = (wallets: Array<Record>, header: string): Array<Record> => {
+    return wallets.map((record: Record, i: number) => {
+      if (i === 0) {
+        return {
+          ...record,
+          headerLabel: header
+        }
+      }
+      return record
+    })
+  }
+  getMostRecentlyUsedWalletRecords = (size: number) => {
+    const { mostRecentWallets } = this.props
+    const { records } = this.state
+    const mostRecentWalletRecords: Array<Record> = []
+    let i = 0
+    while (mostRecentWalletRecords.length < size) {
+      if (!mostRecentWallets[i]) {
+        break
+      }
+      const mostRecentWalletRecord = records.find(record => record.walletItem && record.walletItem.id === mostRecentWallets[i].id)
+      if (mostRecentWalletRecord) {
+        mostRecentWalletRecords.push({
+          ...mostRecentWalletRecord,
+          currencyCode: mostRecentWallets[i].currencyCode,
+          mostRecentUsed: true
+        })
+      }
+      i++
+    }
+    return this.setWalletRecordsLabel(mostRecentWalletRecords, 'mostRecentWalletsHeader')
+  }
+  getWalletRecords = () => {
     const { records, input } = this.state
+
+    // Most Recent Wallet Records
     if (input === '') {
+      const walletTokenCount = records.reduce((total: number, record: Record) => {
+        const wallet = record.walletItem
+        const tokenValue = wallet ? wallet.enabledTokens.length : 0
+        if (wallet) {
+          return total + tokenValue + 1
+        }
+        return total
+      }, 0)
+      if (walletTokenCount > 4 && walletTokenCount < 11) {
+        const wallets = this.setWalletRecordsLabel(records, 'normalWalletHeader')
+        return [...this.getMostRecentlyUsedWalletRecords(2), ...wallets]
+      }
+      if (walletTokenCount > 10) {
+        const wallets = this.setWalletRecordsLabel(records, 'normalWalletHeader')
+        return [...this.getMostRecentlyUsedWalletRecords(3), ...wallets]
+      }
       return records
     }
-    const upperCaseInput = input.toUpperCase()
+
+    // Search Input Filter
+    const inputLowerCase = input.toLowerCase()
     const filteredRecords = []
     for (let i = 0; i < records.length; i++) {
       const record: Record = records[i]
       const { walletItem, supportedWalletType } = record
       if (walletItem) {
-        const tokens = walletItem.enabledTokens.toString()
+        const { name, currencyCode, currencyNames, enabledTokens } = walletItem
+        const nameString = name.toLowerCase()
+        const currencyNameString = currencyNames[currencyCode].toString().toLowerCase()
+        const currencyCodeString = currencyCode.toLowerCase()
+        const tokenCodesString = enabledTokens.toString().toLowerCase()
+        const tokenNamesObject = {}
+        enabledTokens.forEach(token => {
+          tokenNamesObject[token] = currencyNames[token]
+        })
+        const tokenNameString = JSON.stringify(tokenNamesObject).toLowerCase()
         if (
-          walletItem.name.includes(input) ||
-          walletItem.currencyCode.includes(upperCaseInput) ||
-          walletItem.enabledTokens.includes(upperCaseInput) ||
-          tokens.includes(upperCaseInput)
+          nameString.includes(inputLowerCase) ||
+          currencyNameString.includes(inputLowerCase) ||
+          currencyCodeString.includes(inputLowerCase) ||
+          tokenCodesString.includes(inputLowerCase) ||
+          tokenNameString.includes(inputLowerCase)
         ) {
           filteredRecords.push(record)
         }
@@ -177,25 +252,26 @@ export class WalletListModal extends Component<Props, LocalState> {
   render () {
     const { bridge } = this.props
     const { input } = this.state
-
     return (
       <AirshipModal bridge={bridge} onCancel={() => bridge.resolve(null)}>
         {gap => (
           <Fragment>
-            <View style={{ flex: 1, paddingLeft: scale(12), paddingRight: scale(12) }}>
-              <FormField
-                autoFocus
-                error={''}
-                keyboardType={'default'}
-                label={this.props.headerTitle}
-                onChangeText={this.onSearchFilterChange}
-                style={MaterialInputStyle}
-                value={input}
-              />
+            <View style={{ flex: 1 }}>
+              <View style={{ marginHorizontal: scale(15), marginBottom: scale(13) }}>
+                <FormField
+                  autoFocus
+                  error={''}
+                  keyboardType={'default'}
+                  label={this.props.headerTitle}
+                  onChangeText={this.onSearchFilterChange}
+                  style={MaterialInputStyle}
+                  value={input}
+                />
+              </View>
               <FlatList
                 style={{ flex: 1, marginBottom: -gap.bottom }}
                 contentContainerStyle={{ paddingBottom: gap.bottom }}
-                data={this.filterRecords()}
+                data={this.getWalletRecords()}
                 initialNumToRender={24}
                 keyboardShouldPersistTaps="handled"
                 keyExtractor={this.keyExtractor}

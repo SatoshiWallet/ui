@@ -18,6 +18,11 @@ jest.mock('react-native-device-info', () => ({
     return false
   }
 }))
+jest.mock('edge-login-ui-rn', () => ({
+  getSupportedBiometryType () {
+    return 'FaceID'
+  }
+}))
 jest.mock('react-native-firebase', () => ({ isMock: true }))
 jest.mock('react-native-share', () => 'RNShare')
 jest.mock(
@@ -28,7 +33,6 @@ jest.mock(
       play () {}
     }
 )
-jest.mock('react-native-qrcode', () => 'QRCode')
 jest.mock('react-native-camera', () => ({
   RNCamera: {
     Constants: {

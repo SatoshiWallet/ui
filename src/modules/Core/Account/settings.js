@@ -3,7 +3,7 @@
 import type { EdgeAccount } from 'edge-core-js'
 
 import { showError } from '../../../components/services/AirshipInstance.js'
-import type { PasswordReminder } from '../../../types/types.js'
+import type { MostRecentWallet, PasswordReminder } from '../../../types/types.js'
 import { categories } from './subcategories.js'
 
 // Default Core Settings
@@ -27,6 +27,7 @@ export const SYNCED_ACCOUNT_DEFAULTS = {
   defaultFiat: 'USD',
   defaultIsoFiat: 'iso:USD',
   merchantMode: false,
+  preferredSwapPluginId: '',
   countryCode: '',
   BTC: {
     denomination: '100000000'
@@ -175,6 +176,9 @@ export const SYNCED_ACCOUNT_DEFAULTS = {
   DAI: {
     denomination: '1000000000000000000'
   },
+  SAI: {
+    denomination: '1000000000000000000'
+  },
   BRZ: {
     denomination: '10000'
   },
@@ -208,10 +212,17 @@ export const SYNCED_ACCOUNT_DEFAULTS = {
   CDAI: {
     denomination: '100000000'
   },
+  CSAI: {
+    denomination: '100000000'
+  },
   CETH: {
     denomination: '100000000'
   },
+  ETHBNT: {
+    denomination: '1000000000000000000'
+  },
   customTokens: [],
+  mostRecentWallets: [],
   passwordRecoveryRemindersShown: PASSWORD_RECOVERY_REMINDERS_SHOWN
 }
 
@@ -220,6 +231,7 @@ export const SYNCED_ACCOUNT_TYPES = {
   defaultFiat: 'string',
   defaultIsoFiat: 'string',
   merchantMode: 'boolean',
+  preferredSwapPluginId: 'string',
   countryCode: 'string',
   BTC: 'object',
   BCH: 'object',
@@ -273,6 +285,7 @@ export const SYNCED_ACCOUNT_TYPES = {
   KIN: 'object',
   USDT: 'object',
   DAI: 'object',
+  SAI: 'object',
   RBTC: 'object',
   RIF: 'object',
   CREP: 'object',
@@ -280,9 +293,12 @@ export const SYNCED_ACCOUNT_TYPES = {
   CBAT: 'object',
   CZRX: 'object',
   CWBTC: 'object',
+  CSAI: 'object',
   CDAI: 'object',
   CETH: 'object',
+  ETHBNT: 'object',
   customTokens: 'object', // arrays return 'object' to typeof
+  mostRecentWallets: 'object',
   passwordRecoveryRemindersShown: 'object'
 }
 
@@ -347,6 +363,19 @@ export const setMerchantModeRequest = (account: EdgeAccount, merchantMode: boole
     return setSyncedSettings(account, updatedSettings)
   })
 
+export const setPreferredSwapPluginId = (account: EdgeAccount, pluginId: string | void) => {
+  return getSyncedSettings(account).then(settings => {
+    const updatedSettings = updateSettings(settings, { preferredSwapPluginId: pluginId == null ? '' : pluginId })
+    return setSyncedSettings(account, updatedSettings)
+  })
+}
+
+export const setMostRecentWalletsSelected = (account: EdgeAccount, mostRecentWallets: Array<MostRecentWallet>) =>
+  getSyncedSettings(account).then(settings => {
+    const updatedSettings = updateSettings(settings, { mostRecentWallets })
+    return setSyncedSettings(account, updatedSettings)
+  })
+
 // Local Settings
 export const setBluetoothModeRequest = (account: EdgeAccount, bluetoothMode: boolean) =>
   getLocalSettings(account).then(settings => {
@@ -363,13 +392,6 @@ export const setPasswordReminderRequest = (account: EdgeAccount, passwordReminde
 export const setAccountBalanceVisibility = (account: EdgeAccount, isAccountBalanceVisible: boolean) => {
   return getLocalSettings(account).then(settings => {
     const updatedSettings = updateSettings(settings, { isAccountBalanceVisible })
-    return setLocalSettings(account, updatedSettings)
-  })
-}
-
-export const setWalletFiatBalanceVisibility = (account: EdgeAccount, isWalletFiatBalanceVisible: boolean) => {
-  return getLocalSettings(account).then(settings => {
-    const updatedSettings = updateSettings(settings, { isWalletFiatBalanceVisible })
     return setLocalSettings(account, updatedSettings)
   })
 }

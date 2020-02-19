@@ -10,14 +10,10 @@ import FAIcon from 'react-native-vector-icons/FontAwesome'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import SecondaryModal from '../../connectors/SecondaryModalConnector.js'
-import * as Constants from '../../constants/indexConstants'
 import s from '../../locales/strings.js'
-import type { PermissionStatus } from '../../modules/PermissionsManager.js'
-import { PermissionStatusStrings } from '../../modules/PermissionsManager.js'
 import T from '../../modules/UI/components/FormattedText/index'
-import WalletListModal from '../../modules/UI/components/WalletListModal/WalletListModalConnector'
+import { type PermissionStatus } from '../../reducers/PermissionsReducer.js'
 import styles, { styles as styleRaw } from '../../styles/scenes/ScaneStyle'
-import { type GuiWallet } from '../../types/types.js'
 import { scale } from '../../util/scaling.js'
 import { SceneWrapper } from '../common/SceneWrapper.js'
 
@@ -25,7 +21,6 @@ type Props = {
   cameraPermission: PermissionStatus,
   torchEnabled: boolean,
   scanEnabled: boolean,
-  showToWalletModal: boolean,
   deepLinkPending: boolean,
   deepLinkUri: string | null,
   qrCodeScanned: (data: string) => void,
@@ -33,9 +28,7 @@ type Props = {
   toggleEnableTorch: () => void,
   toggleAddressModal: () => void,
   toggleScanToWalletListModal: () => void,
-  onSelectWallet: (string, string) => void,
-  markAddressDeepLinkDone: () => any,
-  wallets: { [string]: GuiWallet }
+  markAddressDeepLinkDone: () => any
 }
 
 const HEADER_TEXT = s.strings.send_scan_header_text
@@ -68,17 +61,9 @@ export class Scan extends Component<Props> {
   }
 
   render () {
-    const { onSelectWallet, wallets } = this.props
-    const allowedWallets = {}
-    for (const id in wallets) {
-      const wallet = wallets[id]
-      if (wallet.receiveAddress && wallet.receiveAddress.publicAddress) {
-        allowedWallets[id] = wallets[id]
-      }
-    }
     return (
       <Fragment>
-        <SceneWrapper background="header">
+        <SceneWrapper background="header" hasTabs={false}>
           {this.renderCameraArea()}
           <View style={styles.overlayButtonAreaWrap}>
             <TouchableHighlight style={styles.bottomButton} onPress={this._onToggleAddressModal} underlayColor={styleRaw.underlay.color}>
@@ -95,7 +80,6 @@ export class Scan extends Component<Props> {
               </View>
             </TouchableHighlight>
           </View>
-          {this.props.showToWalletModal && <WalletListModal wallets={allowedWallets} type={Constants.FROM} onSelectWallet={onSelectWallet} />}
         </SceneWrapper>
         <SecondaryModal />
       </Fragment>
@@ -123,7 +107,7 @@ export class Scan extends Component<Props> {
       return <View style={styles.cameraArea} />
     }
 
-    if (this.props.cameraPermission === PermissionStatusStrings.DENIED) {
+    if (this.props.cameraPermission === 'denied') {
       return (
         <View style={styles.cameraArea}>
           <Text style={styles.cameraPermissionDeniedText}>{DENIED_PERMISSION_TEXT}</Text>
@@ -134,7 +118,7 @@ export class Scan extends Component<Props> {
       )
     }
 
-    if (this.props.cameraPermission === PermissionStatusStrings.AUTHORIZED) {
+    if (this.props.cameraPermission === 'authorized') {
       const flashMode = this.props.torchEnabled ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off
 
       return (

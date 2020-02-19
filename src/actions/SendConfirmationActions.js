@@ -56,6 +56,11 @@ export const newPin = (pin: string) => ({
   data: { pin }
 })
 
+export const toggleCryptoOnTop = () => ({
+  type: 'UI/SEND_CONFIMATION/TOGGLE_CRYPTO_ON_TOP',
+  data: null
+})
+
 export const updateAmount = (nativeAmount: string, exchangeAmount: string, fiatPerCrypto: string, forceUpdateGui?: boolean = false) => (
   dispatch: Dispatch,
   getState: GetState
@@ -161,6 +166,8 @@ export const updateMaxSpend = () => (dispatch: Dispatch, getState: GetState) => 
 
       dispatch(reset())
 
+      dispatch(toggleCryptoOnTop())
+
       dispatch(newSpendInfo(spendInfo, authRequired))
 
       dispatch(updateAmount(nativeAmount, exchangeAmount, fiatPerCrypto.toString(), true))
@@ -221,6 +228,14 @@ export const signBroadcastAndSave = () => async (dispatch: Dispatch, getState: G
     let edgeMetadata = { ...spendInfo.metadata }
     if (state.ui.scenes.sendConfirmation.transactionMetadata) {
       edgeMetadata = { ...edgeMetadata, ...state.ui.scenes.sendConfirmation.transactionMetadata }
+    }
+    const publicAddress = spendInfo ? spendInfo.spendTargets[0].publicAddress : ''
+    if (publicAddress) {
+      if (edgeMetadata.notes) {
+        edgeMetadata.notes += `\n${s.strings.tx_notes_metadata_recipient_address + publicAddress}`
+      } else {
+        edgeMetadata.notes = s.strings.tx_notes_metadata_recipient_address + publicAddress
+      }
     }
     if (!edgeMetadata.amountFiat) {
       edgeMetadata.amountFiat = amountFiat

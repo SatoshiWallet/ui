@@ -23,7 +23,7 @@ import { type AuthType, getSpendInfoWithoutState } from '../../modules/UI/scenes
 import { convertCurrencyFromExchangeRates } from '../../modules/UI/selectors.js'
 import { type GuiMakeSpendInfo, type SendConfirmationState } from '../../reducers/scenes/SendConfirmationReducer.js'
 import { rawStyles, styles } from '../../styles/scenes/SendConfirmationStyle.js'
-import type { GuiCurrencyInfo, GuiDenomination, SpendingLimits } from '../../types/types.js'
+import type { GuiCurrencyInfo, GuiDenomination, GuiWallet, SpendingLimits } from '../../types/types.js'
 import { convertNativeToDisplay, convertNativeToExchange, decimalOrZero, getDenomFromIsoCode } from '../../util/utils.js'
 import { AddressTextWithBlockExplorerModal } from '../common/AddressTextWithBlockExplorerModal'
 import { SceneWrapper } from '../common/SceneWrapper.js'
@@ -59,7 +59,9 @@ export type SendConfirmationStateProps = {
   exchangeRates: { [string]: number },
   coreWallet: EdgeCurrencyWallet,
   sceneState: SendConfirmationState,
-  spendingLimits: SpendingLimits
+  spendingLimits: SpendingLimits,
+  toggleCryptoOnTop: number,
+  guiWallet: GuiWallet
 }
 
 export type SendConfirmationDispatchProps = {
@@ -93,8 +95,10 @@ type State = {|
 
 export class SendConfirmation extends Component<Props, State> {
   pinInput: any
+  flipInput: any
   count: number
   lastSeenCount: number
+
   constructor (props: Props) {
     super(props)
     slowlog(this, /.*/, global.slowlogOptions)
@@ -114,6 +118,7 @@ export class SendConfirmation extends Component<Props, State> {
     }
     this.count = 0
     this.lastSeenCount = 0
+    this.flipInput = React.createRef()
   }
 
   componentDidMount () {
@@ -137,6 +142,9 @@ export class SendConfirmation extends Component<Props, State> {
   componentDidUpdate (prevProps: Props) {
     if (!prevProps.transactionMetadata && this.props.transactionMetadata && this.props.authRequired !== 'none' && this.props.nativeAmount !== '0') {
       this.pinInput.focus()
+    }
+    if (prevProps.toggleCryptoOnTop !== this.props.toggleCryptoOnTop) {
+      this.flipInput.current.toggleCryptoOnTop()
     }
   }
 
@@ -167,7 +175,7 @@ export class SendConfirmation extends Component<Props, State> {
   }
 
   render () {
-    const { networkFee, parentNetworkFee } = this.props
+    const { networkFee, parentNetworkFee, guiWallet } = this.props
     const primaryInfo: GuiCurrencyInfo = {
       displayCurrencyCode: this.props.currencyCode,
       displayDenomination: this.props.primaryDisplayDenomination,
@@ -209,6 +217,9 @@ export class SendConfirmation extends Component<Props, State> {
 
     const isTaggableCurrency = !!getSpecialCurrencyInfo(currencyCode).uniqueIdentifier
     const networkFeeData = this.getNetworkFeeData()
+
+    const flipInputHeaderText = guiWallet ? sprintf(s.strings.send_from_wallet, guiWallet.name) : ''
+    const flipInputHeaderLogo = guiWallet.symbolImageDarkMono
     return (
       <Fragment>
         <SceneWrapper>
@@ -232,6 +243,8 @@ export class SendConfirmation extends Component<Props, State> {
 
             <View style={styles.main}>
               <ExchangedFlipInput
+                headerText={flipInputHeaderText}
+                headerLogo={flipInputHeaderLogo}
                 primaryCurrencyInfo={{ ...primaryInfo }}
                 secondaryCurrencyInfo={{ ...secondaryInfo }}
                 exchangeSecondaryToPrimaryRatio={this.props.fiatPerCrypto}
@@ -242,6 +255,7 @@ export class SendConfirmation extends Component<Props, State> {
                 isEditable={this.props.isEditable}
                 isFiatOnTop={this.state.isFiatOnTop}
                 isFocus={this.state.isFocus}
+                ref={this.flipInput}
               />
 
               <Scene.Padding style={{ paddingHorizontal: 54 }}>

@@ -1,5 +1,49 @@
 # edge-react-gui
 
+## 1.11.4
+
+- New Visual Improvements
+- Buy Crypto with ApplePay now supported in United States
+- Automatically add recipient address in notes after a send transaction for easy viewing
+- Improved wallet search
+- Minor bug fixes
+
+## 1.11.3
+
+- Update BSV address to use 1 format
+- Remove Bitcoin Cash prefix from BCH addresses
+- Add ETHBNT as a default token
+- Fixed BNB Syncing
+- Fixed Wallet Picker to use the same wallet order from the Wallets List screen
+- Visual and text improvements
+- Minor bug fixes
+
+## 1.11.2
+
+- Fixed RSK synchronization
+- Resolved delayed app notifications
+- Fixed various wallet list display issues
+- Enhanced ETH network performance
+
+## 1.11.1
+
+- Wallet list fixes
+- Update Banxa GB
+
+## 1.11.0
+
+- Redesign of Wallet List and Transaction History screens 
+- Improved 2FA Background Notifications 
+- Safello - Sell 
+- Safello - Denmark region support added 
+- Safello - Additional payment method added for Sweden 
+- Support new DAI and SAI
+- Other minor fixes
+
+## 1.10.3
+
+- FIO Registration URL update
+
 ## 1.10.2
 
 - Improve EOS & Ethereum connectivity.

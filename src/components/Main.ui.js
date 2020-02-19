@@ -9,19 +9,19 @@ import * as URI from 'uri-js'
 
 import ENV from '../../env.json'
 import MenuIcon from '../assets/images/MenuButton/menu.png'
+import buyIconSelected from '../assets/images/tabbar/buy_selected.png'
+import buyIcon from '../assets/images/tabbar/buy.png'
 import exchangeIconSelected from '../assets/images/tabbar/exchange_selected.png'
 import exchangeIcon from '../assets/images/tabbar/exchange.png'
-import receiveIconSelected from '../assets/images/tabbar/receive_selected.png'
-import receiveIcon from '../assets/images/tabbar/receive.png'
-import scanIconSelected from '../assets/images/tabbar/scan_selected.png'
-import scanIcon from '../assets/images/tabbar/scan.png'
+import sellIconSelected from '../assets/images/tabbar/sell_selected.png'
+import sellIcon from '../assets/images/tabbar/sell.png'
 import walletIconSelected from '../assets/images/tabbar/wallets_selected.png'
 import walletIcon from '../assets/images/tabbar/wallets.png'
 import { CreateWalletChoiceComponent } from '../components/scenes/CreateWalletChoiceScene.js'
+import { SwapSettingsScene } from '../components/scenes/SwapSettingsScene.js'
 import ExchangeDropMenu from '../connectors/components/HeaderMenuExchangeConnector'
 import RequestDropMenu from '../connectors/components/HeaderMenuRequestConnector'
-import CurrencySettingsTitleConnector from '../connectors/CurrencySettingsTitleConnector.js'
-import { ExchangeSettingsConnector } from '../connectors/ExchangeSettingsConnector.js'
+import { HeaderWalletSelectorConnector as HeaderWalletSelector } from '../connectors/components/HeaderWalletSelectorConnector.js'
 import AddToken from '../connectors/scenes/AddTokenConnector.js'
 import ChangePasswordConnector from '../connectors/scenes/ChangePasswordConnector.ui'
 import ChangePinConnector from '../connectors/scenes/ChangePinConnector.ui'
@@ -54,26 +54,25 @@ import SpendingLimitsConnector from '../connectors/SpendingLimitsConnector.js'
 import * as Constants from '../constants/indexConstants'
 import s from '../locales/strings.js'
 import DeepLinkingManager from '../modules/DeepLinkingManager.js'
-import PermissionsManager, { type Permission, PermissionStrings } from '../modules/PermissionsManager.js'
 import ControlPanel from '../modules/UI/components/ControlPanel/ControlPanelConnector'
 import T from '../modules/UI/components/FormattedText/index'
 import BackButton from '../modules/UI/components/Header/Component/BackButton.ui'
 import { ExitButton } from '../modules/UI/components/Header/Component/ExitButton.js'
 import HelpButton from '../modules/UI/components/Header/Component/HelpButton.ui.js'
-import Header from '../modules/UI/components/Header/Header.ui'
 import WalletName from '../modules/UI/components/Header/WalletName/WalletNameConnector.js'
 import { ifLoggedIn } from '../modules/UI/components/LoginStatus/LoginStatus.js'
 import { PasswordRecoveryReminderModalConnector } from '../modules/UI/components/PasswordRecoveryReminderModal/PasswordRecoveryReminderModalConnector.js'
 import { passwordReminderModalConnector as PasswordReminderModal } from '../modules/UI/components/PasswordReminderModal/indexPasswordReminderModal.js'
 import { handlePluginBack, renderPluginBackButton } from '../modules/UI/scenes/Plugins/BackButton.js'
+import { type Permission } from '../reducers/PermissionsReducer.js'
 import { styles } from '../styles/MainStyle.js'
 import { scale } from '../util/scaling.js'
-import { trackEvent } from '../util/tracking.js'
+import { logEvent } from '../util/tracking.js'
+import { CurrencySettingsTitle } from './navigation/CurrencySettingsTitle.js'
 import { ChangeMiningFeeScene } from './scenes/ChangeMiningFeeScene.js'
 import { CreateWalletName } from './scenes/CreateWalletNameScene.js'
 import { CryptoExchangeQuoteProcessingScreenComponent } from './scenes/CryptoExchangeQuoteProcessingScene.js'
 import { LoadingScene } from './scenes/LoadingScene.js'
-import { OnBoardingComponent } from './scenes/OnBoardingScene.js'
 import { LegacyPluginViewConnect, renderLegacyPluginBackButton } from './scenes/PluginViewLegacyScene.js'
 import { PluginListScene } from './scenes/PluginViewListScene.js'
 import { PluginViewConnect } from './scenes/PluginViewScene.js'
@@ -85,15 +84,15 @@ const RouterWithRedux = connect()(Router)
 
 const tabBarIconFiles: { [tabName: string]: string } = {}
 tabBarIconFiles[Constants.WALLET_LIST] = walletIcon
-tabBarIconFiles[Constants.REQUEST] = receiveIcon
-tabBarIconFiles[Constants.SCAN] = scanIcon
+tabBarIconFiles[Constants.PLUGIN_BUY] = buyIcon
+tabBarIconFiles[Constants.PLUGIN_SELL] = sellIcon
 tabBarIconFiles[Constants.TRANSACTION_LIST] = exchangeIcon
 tabBarIconFiles[Constants.EXCHANGE] = exchangeIcon
 
 const tabBarIconFilesSelected: { [tabName: string]: string } = {}
 tabBarIconFilesSelected[Constants.WALLET_LIST] = walletIconSelected
-tabBarIconFilesSelected[Constants.REQUEST] = receiveIconSelected
-tabBarIconFilesSelected[Constants.SCAN] = scanIconSelected
+tabBarIconFilesSelected[Constants.PLUGIN_BUY] = buyIconSelected
+tabBarIconFilesSelected[Constants.PLUGIN_SELL] = sellIconSelected
 tabBarIconFilesSelected[Constants.TRANSACTION_LIST] = exchangeIconSelected
 tabBarIconFilesSelected[Constants.EXCHANGE] = exchangeIconSelected
 
@@ -106,8 +105,8 @@ const CREATE_WALLET = s.strings.title_create_wallet
 const CREATE_WALLET_ACCOUNT_SETUP = s.strings.create_wallet_create_account
 const CREATE_WALLET_ACCOUNT_ACTIVATE = s.strings.create_wallet_account_activate
 const TRANSACTIONS_EXPORT = s.strings.title_export_transactions
-const REQUEST = s.strings.title_request
-const SCAN = s.strings.title_scan
+const BUY = s.strings.title_buy
+const SELL = s.strings.title_sell
 const EDGE_LOGIN = s.strings.title_edge_login
 const EXCHANGE = s.strings.title_exchange
 const CHANGE_MINING_FEE = s.strings.title_change_mining_fee
@@ -126,7 +125,6 @@ const DEFAULT_FIAT = s.strings.title_default_fiat
 const TERMS_OF_SERVICE = s.strings.title_terms_of_service
 
 type Props = {
-  hideWalletListModal: () => mixed,
   requestPermission: (permission: Permission) => void,
   username?: string,
   dispatchEnableScan: () => void,
@@ -158,7 +156,7 @@ export default class Main extends Component<Props> {
   }
 
   componentDidMount () {
-    trackEvent('AppStart')
+    logEvent('AppStart')
 
     Linking.getInitialURL()
       .then(url => {
@@ -251,11 +249,10 @@ export default class Main extends Component<Props> {
           <Stack key={Constants.ROOT} hideNavBar panHandlers={null}>
             <Scene key={Constants.LOGIN} initial component={LoginConnector} username={this.props.username} />
 
-            <Scene key={Constants.ONBOARDING} navTransparent={true} component={OnBoardingComponent} />
             <Scene
               key={Constants.TRANSACTION_DETAILS}
               navTransparent={true}
-              onEnter={() => this.props.requestPermission(PermissionStrings.CONTACTS)}
+              onEnter={() => this.props.requestPermission('contacts')}
               clone
               component={TransactionDetails}
               renderTitle={this.renderTitle(TRANSACTION_DETAILS)}
@@ -359,12 +356,11 @@ export default class Main extends Component<Props> {
                     <Scene
                       key={Constants.TRANSACTION_LIST}
                       onEnter={() => {
-                        this.props.requestPermission(PermissionStrings.CONTACTS)
-                        this.props.hideWalletListModal()
+                        this.props.requestPermission('contacts')
                       }}
                       navTransparent={true}
                       component={TransactionListConnector}
-                      renderTitle={this.renderWalletListNavBar()}
+                      renderTitle={this.renderHeaderWalletSelector()}
                       renderLeftButton={this.renderBackButton(WALLETS)}
                       renderRightButton={this.renderMenuButton()}
                     />
@@ -406,41 +402,65 @@ export default class Main extends Component<Props> {
                     />
                   </Stack>
 
-                  <Scene
-                    key={Constants.REQUEST}
-                    navTransparent={true}
-                    onEnter={this.props.hideWalletListModal}
-                    icon={this.icon(Constants.REQUEST)}
-                    tabBarLabel={REQUEST}
-                    component={Request}
-                    renderTitle={this.renderWalletListNavBar()}
-                    renderLeftButton={this.renderRequestMenuButton()}
-                    renderRightButton={this.renderMenuButton()}
-                  />
-
-                  <Stack key={Constants.SCAN} icon={this.icon(Constants.SCAN)} tabBarLabel={SCAN}>
+                  <Stack key={Constants.PLUGIN_BUY} icon={this.icon(Constants.PLUGIN_BUY)} tabBarLabel={BUY}>
                     <Scene
-                      key={Constants.SCAN_NOT_USED}
+                      key={Constants.PLUGIN_BUY}
                       navTransparent={true}
-                      onEnter={props => {
-                        this.props.requestPermission(PermissionStrings.CAMERA)
-                        this.props.dispatchEnableScan()
-                        this.props.hideWalletListModal()
-                        this.props.checkAndShowGetCryptoModal(props.data)
-                      }}
-                      onExit={this.props.dispatchDisableScan}
-                      component={Scan}
-                      renderTitle={this.renderWalletListNavBar()}
+                      component={PluginListScene}
+                      renderTitle={this.renderTitle(s.strings.title_plugin_buy)}
                       renderLeftButton={this.renderHelpButton()}
                       renderRightButton={this.renderMenuButton()}
+                      onLeft={Actions.pop}
+                      direction="buy"
                     />
                     <Scene
-                      key={Constants.EDGE_LOGIN}
+                      key={Constants.PLUGIN_VIEW}
                       navTransparent={true}
-                      component={EdgeLoginSceneConnector}
-                      renderTitle={this.renderTitle(EDGE_LOGIN)}
+                      component={ifLoggedIn(PluginViewConnect, LoadingScene)}
+                      renderTitle={props => this.renderTitle(props.plugin.name)}
+                      renderLeftButton={renderPluginBackButton(BACK)}
+                      renderRightButton={this.renderExitButton()}
+                      hideTabBar
+                    />
+                    <Scene
+                      key={Constants.PLUGIN_VIEW_LEGACY}
+                      navTransparent={true}
+                      component={ifLoggedIn(LegacyPluginViewConnect, LoadingScene)}
+                      renderTitle={props => this.renderTitle(props.plugin.name)}
+                      renderLeftButton={renderLegacyPluginBackButton(BACK)}
+                      renderRightButton={this.renderExitButton()}
+                      hideTabBar
+                    />
+                  </Stack>
+
+                  <Stack key={Constants.PLUGIN_SELL} icon={this.icon(Constants.PLUGIN_SELL)} tabBarLabel={SELL}>
+                    <Scene
+                      key={Constants.PLUGIN_SELL}
+                      navTransparent={true}
+                      component={PluginListScene}
+                      renderTitle={this.renderTitle(s.strings.title_plugin_sell)}
                       renderLeftButton={this.renderHelpButton()}
-                      renderRightButton={this.renderEmptyButton()}
+                      renderRightButton={this.renderMenuButton()}
+                      onLeft={Actions.pop}
+                      direction="sell"
+                    />
+                    <Scene
+                      key={Constants.PLUGIN_VIEW}
+                      navTransparent={true}
+                      component={ifLoggedIn(PluginViewConnect, LoadingScene)}
+                      renderTitle={props => this.renderTitle(props.plugin.name)}
+                      renderLeftButton={renderPluginBackButton(BACK)}
+                      renderRightButton={this.renderExitButton()}
+                      hideTabBar
+                    />
+                    <Scene
+                      key={Constants.PLUGIN_VIEW_LEGACY}
+                      navTransparent={true}
+                      component={ifLoggedIn(LegacyPluginViewConnect, LoadingScene)}
+                      renderTitle={props => this.renderTitle(props.plugin.name)}
+                      renderLeftButton={renderLegacyPluginBackButton(BACK)}
+                      renderRightButton={this.renderExitButton()}
+                      hideTabBar
                     />
                   </Stack>
 
@@ -482,6 +502,43 @@ export default class Main extends Component<Props> {
                     />
                   </Stack>
                 </Tabs>
+
+                <Stack key={Constants.SCAN} hideTabBar>
+                  <Scene
+                    key={Constants.SCAN_NOT_USED}
+                    navTransparent={true}
+                    onEnter={props => {
+                      this.props.requestPermission('camera')
+                      this.props.dispatchEnableScan()
+                      this.props.checkAndShowGetCryptoModal(props.data)
+                    }}
+                    onExit={this.props.dispatchDisableScan}
+                    component={Scan}
+                    renderTitle={this.renderHeaderWalletSelector()}
+                    renderLeftButton={this.renderBackButton()}
+                    renderRightButton={this.renderMenuButton()}
+                  />
+                  <Scene
+                    key={Constants.EDGE_LOGIN}
+                    navTransparent={true}
+                    component={EdgeLoginSceneConnector}
+                    renderTitle={this.renderTitle(EDGE_LOGIN)}
+                    renderLeftButton={this.renderBackButton()}
+                    renderRightButton={this.renderHelpButton()}
+                  />
+                </Stack>
+
+                <Stack key={Constants.REQUEST}>
+                  <Scene
+                    key={Constants.REQUEST}
+                    navTransparent={true}
+                    component={Request}
+                    renderTitle={this.renderHeaderWalletSelector()}
+                    renderLeftButton={this.renderBackButton()}
+                    renderRightButton={this.renderRequestMenuButton()}
+                    hideTabBar
+                  />
+                </Stack>
 
                 <Stack key={Constants.SEND_CONFIRMATION} hideTabBar>
                   <Scene
@@ -577,7 +634,7 @@ export default class Main extends Component<Props> {
                   <Scene
                     key={Constants.EXCHANGE_SETTINGS}
                     navTransparent={true}
-                    component={ExchangeSettingsConnector}
+                    component={SwapSettingsScene}
                     renderTitle={this.renderTitle(EXCHANGE_SETTINGS)}
                     renderLeftButton={this.renderBackButton()}
                     renderRightButton={this.renderEmptyButton()}
@@ -599,42 +656,6 @@ export default class Main extends Component<Props> {
                     renderLeftButton={this.renderBackButton(BACK)}
                     renderRightButton={this.renderEmptyButton()}
                     onLeft={Actions.pop}
-                  />
-                </Stack>
-
-                <Stack key={Constants.PLUGIN_LIST} hideDrawerButton={true}>
-                  <Scene
-                    key={Constants.PLUGIN_LIST}
-                    navTransparent={true}
-                    component={PluginListScene}
-                    renderTitle={props =>
-                      this.renderTitle(
-                        props.direction === 'buy'
-                          ? s.strings.title_plugin_buy
-                          : props.direction === 'sell'
-                            ? s.strings.title_plugin_sell
-                            : s.strings.title_plugin_buysell
-                      )
-                    }
-                    renderLeftButton={this.renderBackButton(BACK)}
-                    renderRightButton={this.renderEmptyButton()}
-                    onLeft={Actions.pop}
-                  />
-                  <Scene
-                    key={Constants.PLUGIN_VIEW}
-                    navTransparent={true}
-                    component={ifLoggedIn(PluginViewConnect, LoadingScene)}
-                    renderTitle={props => this.renderTitle(props.plugin.name)}
-                    renderLeftButton={renderPluginBackButton(BACK)}
-                    renderRightButton={this.renderExitButton()}
-                  />
-                  <Scene
-                    key={Constants.PLUGIN_VIEW_LEGACY}
-                    navTransparent={true}
-                    component={ifLoggedIn(LegacyPluginViewConnect, LoadingScene)}
-                    renderTitle={props => this.renderTitle(props.plugin.name)}
-                    renderLeftButton={renderLegacyPluginBackButton(BACK)}
-                    renderRightButton={this.renderExitButton()}
                   />
                 </Stack>
 
@@ -666,7 +687,6 @@ export default class Main extends Component<Props> {
         </RouterWithRedux>
         <PasswordReminderModal />
         <PasswordRecoveryReminderModalConnector />
-        <PermissionsManager />
 
         <DeepLinkingManager />
       </Fragment>
@@ -684,11 +704,7 @@ export default class Main extends Component<Props> {
           currencyCode={currencyCode}
           navTransparent={true}
           component={CurrencySettings}
-          renderTitle={
-            <View style={styles.titleWrapper}>
-              <CurrencySettingsTitleConnector key={key} cryptoKey={key} pluginName={pluginName} currencyCode={currencyCode} />
-            </View>
-          }
+          renderTitle={<CurrencySettingsTitle key={key} pluginName={pluginName} />}
           renderLeftButton={this.renderBackButton()}
           renderRightButton={this.renderEmptyButton()}
         />
@@ -697,8 +713,8 @@ export default class Main extends Component<Props> {
     return settings
   }
 
-  renderWalletListNavBar = () => {
-    return <Header />
+  renderHeaderWalletSelector = () => {
+    return <HeaderWalletSelector />
   }
 
   renderWalletName = () => {

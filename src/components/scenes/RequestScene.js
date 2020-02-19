@@ -4,7 +4,7 @@ import { bns } from 'biggystring'
 import { createSimpleConfirmModal } from 'edge-components'
 import type { EdgeCurrencyInfo, EdgeCurrencyWallet, EdgeEncodeUri } from 'edge-core-js'
 import React, { Component } from 'react'
-import { ActivityIndicator, Clipboard, Platform, View } from 'react-native'
+import { ActivityIndicator, Clipboard, Dimensions, Platform, View } from 'react-native'
 import ContactsWrapper from 'react-native-contacts-wrapper'
 import RNFS from 'react-native-fs'
 import Share from 'react-native-share'
@@ -17,15 +17,14 @@ import ExchangeRate from '../../modules/UI/components/ExchangeRate/index.js'
 import type { ExchangedFlipInputAmounts } from '../../modules/UI/components/FlipInput/ExchangedFlipInput2.js'
 import { ExchangedFlipInput } from '../../modules/UI/components/FlipInput/ExchangedFlipInput2.js'
 import { Icon } from '../../modules/UI/components/Icon/Icon.ui.js'
-import QRCode from '../../modules/UI/components/QRCode/index.js'
 import RequestStatus from '../../modules/UI/components/RequestStatus/index.js'
 import ShareButtons from '../../modules/UI/components/ShareButtons/index.js'
-import WalletListModal from '../../modules/UI/components/WalletListModal/WalletListModalConnector'
 import { styles } from '../../styles/scenes/RequestStyle.js'
 import { THEME } from '../../theme/variables/airbitz.js'
 import type { GuiCurrencyInfo, GuiWallet } from '../../types/types.js'
 import { getObjectDiff } from '../../util/utils'
 import { launchModal } from '../common/ModalProvider.js'
+import { QrCode } from '../common/QrCode.js'
 import { SceneWrapper } from '../common/SceneWrapper.js'
 import { showError, showToast } from '../services/AirshipInstance.js'
 
@@ -42,9 +41,7 @@ export type RequestStateProps = {
   publicAddress: string,
   legacyAddress: string,
   secondaryCurrencyInfo: GuiCurrencyInfo,
-  showToWalletModal: boolean,
-  useLegacyAddress: boolean,
-  wallets: { [string]: GuiWallet }
+  useLegacyAddress: boolean
 }
 export type RequestLoadingProps = {
   edgeWallet: null,
@@ -57,13 +54,11 @@ export type RequestLoadingProps = {
   publicAddress: string,
   legacyAddress: string,
   secondaryCurrencyInfo: null,
-  showToWalletModal: null,
   useLegacyAddress: null
 }
 
 export type RequestDispatchProps = {
-  refreshReceiveAddressRequest(string): void,
-  onSelectWallet: (string, string) => void
+  refreshReceiveAddressRequest(string): void
 }
 type ModalState = 'NOT_YET_SHOWN' | 'VISIBLE' | 'SHOWN'
 type CurrencyMinimumPopupState = { [currencyCode: string]: ModalState }
@@ -226,25 +221,23 @@ export class Request extends Component<Props, State> {
       return <ActivityIndicator style={{ flex: 1, alignSelf: 'center' }} size={'large'} />
     }
 
-    const { primaryCurrencyInfo, secondaryCurrencyInfo, exchangeSecondaryToPrimaryRatio, onSelectWallet, wallets, currencyInfo } = this.props
+    const { primaryCurrencyInfo, secondaryCurrencyInfo, exchangeSecondaryToPrimaryRatio, currencyInfo, guiWallet } = this.props
     const addressExplorer = currencyInfo ? currencyInfo.addressExplorer : null
     const requestAddress = this.props.useLegacyAddress ? this.state.legacyAddress : this.state.publicAddress
-    const allowedWallets = {}
-    for (const id in wallets) {
-      const wallet = wallets[id]
-      if (wallet.receiveAddress && wallet.receiveAddress.publicAddress) {
-        allowedWallets[id] = wallets[id]
-      }
-    }
+    const qrSize = Dimensions.get('window').height / 4
+    const flipInputHeaderText = guiWallet ? sprintf(s.strings.send_to_wallet, guiWallet.name) : ''
+    const flipInputHeaderLogo = guiWallet.symbolImageDarkMono
 
     return (
-      <SceneWrapper>
+      <SceneWrapper hasTabs={false}>
         <View style={styles.exchangeRateContainer}>
           <ExchangeRate primaryInfo={primaryCurrencyInfo} secondaryInfo={secondaryCurrencyInfo} secondaryDisplayAmount={exchangeSecondaryToPrimaryRatio} />
         </View>
 
         <View style={styles.main}>
           <ExchangedFlipInput
+            headerText={flipInputHeaderText}
+            headerLogo={flipInputHeaderLogo}
             primaryCurrencyInfo={primaryCurrencyInfo}
             secondaryCurrencyInfo={secondaryCurrencyInfo}
             exchangeSecondaryToPrimaryRatio={exchangeSecondaryToPrimaryRatio}
@@ -253,26 +246,24 @@ export class Request extends Component<Props, State> {
             onExchangeAmountChanged={this.onExchangeAmountChanged}
             keyboardVisible={false}
             color={THEME.COLORS.WHITE}
-            isFiatOnTop={false}
+            isFiatOnTop={true}
             isFocus={false}
           />
 
-          <View style={{ overflow: 'hidden' }}>
-            <QRCode value={this.state.encodedURI} />
+          <View style={styles.qrContainer}>
+            <QrCode data={this.state.encodedURI} size={qrSize} />
           </View>
           <RequestStatus requestAddress={requestAddress} addressExplorer={addressExplorer} amountRequestedInCrypto={0} amountReceivedInCrypto={0} />
         </View>
 
         <View style={styles.shareButtonsContainer}>
           <ShareButtons
-            styles={styles.shareButtons}
             shareViaEmail={this.shareViaEmail}
             shareViaSMS={this.shareViaSMS}
             shareViaShare={this.shareViaShare}
             copyToClipboard={this.copyToClipboard}
           />
         </View>
-        {this.props.showToWalletModal && <WalletListModal wallets={allowedWallets} type={Constants.TO} onSelectWallet={onSelectWallet} />}
       </SceneWrapper>
     )
   }

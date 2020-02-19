@@ -9,14 +9,11 @@ import { openDrawer } from '../actions/ScenesActions.js'
 import { showReEnableOtpModal } from '../actions/SettingsActions.js'
 import { selectWallet } from '../actions/WalletActions.js'
 import Main from '../components/Main.ui'
-import { requestPermission } from '../modules/PermissionsManager.js'
+import { requestPermission } from '../components/services/PermissionsManager.js'
 import type { Dispatch } from '../types/reduxTypes.js'
 
 const mapStateToProps = () => ({})
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  hideWalletListModal () {
-    return dispatch({ type: 'DISABLE_WALLET_LIST_MODAL_VISIBILITY' })
-  },
   requestPermission: permission => {
     return requestPermission(permission)
   },
