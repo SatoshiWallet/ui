@@ -31,7 +31,7 @@ export const styles = {
       backgroundColor: THEME.COLORS.GRAY_4
     },
     text: {
-      color: THEME.COLORS.ACCENT_MINT,
+      color: THEME.COLORS.WHITE,
       textAlign: 'center',
       marginRight: '2%',
       marginLeft: '2%'

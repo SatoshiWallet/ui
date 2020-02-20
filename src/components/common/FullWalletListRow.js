@@ -300,7 +300,7 @@ class FullListRowEmptyData extends Component<any> {
       <TouchableHighlight style={[styles.rowContainer, styles.emptyRow]} underlayColor={styleRaw.emptyRowUnderlay.color}>
         <View style={[styles.rowContent]}>
           <View style={[styles.rowNameTextWrap]}>
-            <ActivityIndicator style={{ height: 18, width: 18 }} />
+            <ActivityIndicator style={{ height: 18, width: 18 }} color="#F7902F"/>
           </View>
         </View>
       </TouchableHighlight>

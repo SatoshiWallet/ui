@@ -60,7 +60,7 @@ const padding = THEME.rem(1 / 4)
 const styles = StyleSheet.create({
   icon: {
     alignSelf: 'center',
-    color: THEME.COLORS.ACCENT_MINT,
+    color: THEME.COLORS.WHITE,
     paddingTop: padding
   },
 

@@ -10,7 +10,7 @@ const MaterialInput = {
     minHeight: 60
   },
   baseColor: THEME.COLORS.WHITE,
-  tintColor: THEME.COLORS.ACCENT_MINT,
+  tintColor: THEME.COLORS.WHITE,
   errorColor: THEME.COLORS.ACCENT_RED,
   textColor: THEME.COLORS.WHITE,
   affixTextStyle: {

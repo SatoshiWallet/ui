@@ -18,7 +18,7 @@ export const rawStyles = {
     width: 52,
     height: 52,
     position: 'absolute',
-    backgroundColor: THEME.COLORS.ACCENT_MINT,
+    backgroundColor: THEME.COLORS.WHITE,
     borderRadius: 52
   },
   disabledThumb: {

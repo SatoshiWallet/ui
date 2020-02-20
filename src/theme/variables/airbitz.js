@@ -17,8 +17,8 @@ export function getHeaderHeight () {
 
 export const colors = {
   gradient: {
-    light: '#3b7ada',
-    dark: '#2b5698'
+    light: '#0c7ab7',
+    dark: '#3173ca'
   },
 
   primary: '#2a5799',
@@ -70,12 +70,12 @@ export const THEME = {
     BLUE_3: '#0E507D',
 
     GRADIENT: {
-      DARK: '#0D2145',
-      LIGHT: '#0E4B75'
+      DARK: '#3173ca',
+      LIGHT: '#0c7ab7'
     },
     GRADIENT_REVERSE: {
-      LIGHT: '#0D2145',
-      DARK: '#0E4B75'
+      LIGHT: '#0c7ab7',
+      DARK: '#3173ca'
     },
 
     ACCENT_BLUE: '#0073D9', // Airbitz blue

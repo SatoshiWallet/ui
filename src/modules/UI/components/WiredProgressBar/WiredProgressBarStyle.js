@@ -12,7 +12,7 @@ export const styles = {
     left: 0,
     top: -3,
     bottom: 0,
-    backgroundColor: THEME.COLORS.ACCENT_MINT,
+    backgroundColor: THEME.COLORS.WHITE,
     zIndex: 100
   }
 }
