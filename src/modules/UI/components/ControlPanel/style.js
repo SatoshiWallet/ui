@@ -5,7 +5,7 @@ import { scale } from '../../../../util/scaling.js'
 
 export default {
   header: {
-    backgroundColor: THEME.COLORS.ACCENT_BLUE,
+    backgroundColor: THEME.COLORS.TRANSPARENT,
     height: scale(48),
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -24,7 +24,6 @@ export default {
     color: THEME.COLORS.GRAY_4
   },
   toggleButton: {
-    backgroundColor: THEME.COLORS.PRIMARY,
     height: scale(58),
     justifyContent: 'flex-start',
     alignItems: 'center'
