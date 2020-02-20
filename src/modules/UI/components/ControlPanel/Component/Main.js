@@ -62,6 +62,7 @@ export default class Main extends Component<Props> {
               <BuyButton />
               <Separator />
               <SettingsButton />
+              <Separator />
             </View>
           </View>
         </ScrollView>

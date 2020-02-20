@@ -26,11 +26,31 @@ export default {
   toggleButton: {
     height: scale(58),
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: scale(15)
   },
   iconImage: {
     width: scale(22),
     height: scale(22)
+  },
+  blockie: {
+    width: scale(56),
+    height: scale(56),
+    borderRadius: scale(28),
+    borderWidth: scale(1),
+    padding: scale(1),
+    borderColor: THEME.COLORS.WHITE
+  },
+  userName: {
+    fontSize: scale(22)
+  },
+  active: {
+    color: THEME.COLORS.ACCENT_MINT,
+    fontSize: scale(15)
+  },
+  loading: {
+    color: THEME.COLORS.ACCENT_RED,
+    fontSize: scale(15)
   },
 
   /// ///////////////////////////////////////////////////
