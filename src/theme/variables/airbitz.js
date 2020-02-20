@@ -40,9 +40,9 @@ export const THEME = {
   FOOTER_TABS_HEIGHT: 50,
 
   FONTS: {
-    DEFAULT: 'SourceSansPro-Black',
-    BOLD: 'SourceSansPro-Bold',
-    SYMBOLS: Platform.OS === 'android' ? 'SF-UI-Text-Regular' : 'SourceSansPro-Black'
+    DEFAULT: 'Exo2-Regular',
+    BOLD: 'Exo2-Bold',
+    SYMBOLS: Platform.OS === 'android' ? 'SF-UI-Text-Regular' : 'Exo2-Regular'
   },
 
   OPACITY: {

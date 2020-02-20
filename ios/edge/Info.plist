@@ -130,6 +130,24 @@
 		<string>SourceSansPro-Regular.ttf</string>
 		<string>SourceSansPro-Semibold.ttf</string>
 		<string>SourceSansPro-SemiboldItalic.ttf</string>
+		<string>Exo2-Black.ttf</string>
+		<string>Exo2-BlackItalic.ttf</string>
+		<string>Exo2-Bold.ttf</string>
+		<string>Exo2-BoldItalic.ttf</string>
+		<string>Exo2-ExtraBold.ttf</string>
+		<string>Exo2-ExtraBoldItalic.ttf</string>
+		<string>Exo2-ExtraLight.ttf</string>
+		<string>Exo2-ExtraLightItalic.ttf</string>
+		<string>Exo2-Italic.ttf</string>
+		<string>Exo2-Light.ttf</string>
+		<string>Exo2-LightItalic.ttf</string>
+		<string>Exo2-Medium.ttf</string>
+		<string>Exo2-MediumItalic.ttf</string>
+		<string>Exo2-Regular.ttf</string>
+		<string>Exo2-SemiBold.ttf</string>
+		<string>Exo2-SemiBoldItalic.ttf</string>
+		<string>Exo2-Thin.ttf</string>
+		<string>Exo2-ThinItalic.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>FontAwesome.ttf</string>
