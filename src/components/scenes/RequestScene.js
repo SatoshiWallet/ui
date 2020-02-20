@@ -218,7 +218,7 @@ export class Request extends Component<Props, State> {
 
   render () {
     if (this.props.loading) {
-      return <ActivityIndicator style={{ flex: 1, alignSelf: 'center' }} size={'large'} color="#FFFFFF"/>
+      return <ActivityIndicator style={{ flex: 1, alignSelf: 'center' }} size={'large'} color="#FFFFFF" />
     }
 
     const { primaryCurrencyInfo, secondaryCurrencyInfo, exchangeSecondaryToPrimaryRatio, currencyInfo, guiWallet } = this.props

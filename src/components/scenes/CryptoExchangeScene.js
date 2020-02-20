@@ -205,7 +205,7 @@ export class CryptoExchangeScene extends Component<Props, LocalState> {
     if (this.props.calculatingMax) {
       return (
         <PrimaryButton>
-          <ActivityIndicator color="#FFFFFF"/>
+          <ActivityIndicator color="#FFFFFF" />
         </PrimaryButton>
       )
     } else if (this.props.fromCurrencyCode !== '' && this.props.toCurrencyCode !== '') {

@@ -43,7 +43,7 @@ export default class EdgeLoginScene extends Component<EdgeLoginSceneProps> {
     if (this.props.isProcessing) {
       return (
         <View style={style.buttonsProcessing}>
-          <ActivityIndicator color="#FFFFFF"/>
+          <ActivityIndicator color="#FFFFFF" />
         </View>
       )
     }
@@ -106,7 +106,7 @@ export default class EdgeLoginScene extends Component<EdgeLoginSceneProps> {
           <View style={Style.spinnerContainer}>
             <View>
               <Text style={Style.loadingTextBody}>{s.strings.edge_login_fetching}</Text>
-              <ActivityIndicator color="#FFFFFF"/>
+              <ActivityIndicator color="#FFFFFF" />
             </View>
           </View>
         </SafeAreaView>

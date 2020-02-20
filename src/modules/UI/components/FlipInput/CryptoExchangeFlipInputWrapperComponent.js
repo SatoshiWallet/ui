@@ -53,7 +53,7 @@ export class CryptoExchangeFlipInputWrapperComponent extends Component<Props> {
       return (
         <View style={[style.containerNoFee, style.containerNoWalletSelected]}>
           <View style={style.topRow}>
-            <ActivityIndicator color="#FFFFFF"/>
+            <ActivityIndicator color="#FFFFFF" />
           </View>
         </View>
       )

@@ -132,7 +132,7 @@ export class Scan extends Component<Props> {
 
     return (
       <View style={styles.cameraArea}>
-        <ActivityIndicator size="large" color="#FFFFFF"/>
+        <ActivityIndicator size="large" color="#FFFFFF" />
       </View>
     )
   }
