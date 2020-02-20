@@ -13,7 +13,7 @@ import { log, logToServer } from './util/logger'
 StatusBar.setBarStyle('light-content')
 if (StatusBar.setTranslucent != null) {
   StatusBar.setTranslucent(true)
-  StatusBar.setBackgroundColor('#00000040')
+  StatusBar.setBackgroundColor('#00000000')
 }
 
 const ENABLE_WHY_DID_YOU_UPDATE = false
