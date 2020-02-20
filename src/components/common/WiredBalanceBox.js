@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 
 import s from '../../locales/strings.js'
 import T from '../../modules/UI/components/FormattedText/index'
+import Gradient from '../../modules/UI/components/Gradient/Gradient.ui'
 import { styles } from '../../styles/components/WiredBalanceBoxStyle.js'
 import { type State } from '../../types/reduxTypes.js'
 import { getFiatSymbol } from '../../util/utils.js'
@@ -63,16 +64,17 @@ class BalanceBox extends PureComponent<BalanceBoxProps, BalanceBoxState> {
       displayedBox = this.noBalanceBox('balanceHidden')
     }
 
-    return <TouchableOpacity onPress={this.props.onPress}>{displayedBox}</TouchableOpacity>
+    return (
+      <Gradient>
+        <TouchableOpacity onPress={this.props.onPress}>{displayedBox}</TouchableOpacity>
+      </Gradient>
+    )
   }
 
   balanceBox (fiatBalanceString: string) {
     return (
       <View style={[styles.totalBalanceBox]}>
         <View style={[styles.totalBalanceWrap]}>
-          <View style={[styles.totalBalanceHeader]}>
-            <T style={[styles.totalBalanceText]}>{s.strings.fragment_wallets_balance_text}</T>
-          </View>
           <View style={[styles.currentBalanceBoxDollarsWrap]}>
             <T style={[styles.currentBalanceBoxDollars]}>{fiatBalanceString}</T>
           </View>

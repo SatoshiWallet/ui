@@ -23,11 +23,11 @@ export const rawStyles = {
   },
   totalBalanceText: {
     fontSize: scale(18),
-    color: THEME.COLORS.PRIMARY
+    color: THEME.COLORS.WHITE
   },
   currentBalanceBoxDollarsWrap: {
     flex: 3,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: THEME.COLORS.TRANSPARENT
   },
@@ -38,11 +38,11 @@ export const rawStyles = {
     backgroundColor: THEME.COLORS.TRANSPARENT
   },
   currentBalanceBoxDollars: {
-    color: THEME.COLORS.PRIMARY,
+    color: THEME.COLORS.WHITE,
     fontSize: scale(44)
   },
   currentBalanceBoxNoExchangeRates: {
-    color: THEME.COLORS.PRIMARY,
+    color: THEME.COLORS.WHITE,
     fontSize: scale(26),
     textAlign: 'center'
   }

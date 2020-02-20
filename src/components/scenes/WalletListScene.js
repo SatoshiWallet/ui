@@ -20,8 +20,8 @@ import T from '../../modules/UI/components/FormattedText/index'
 import Gradient from '../../modules/UI/components/Gradient/Gradient.ui'
 import { Icon } from '../../modules/UI/components/Icon/Icon.ui.js'
 import SafeAreaView from '../../modules/UI/components/SafeAreaView/index.js'
-import { WiredProgressBar } from '../../modules/UI/components/WiredProgressBar/WiredProgressBar.ui.js'
-import { getWalletLoadingPercent } from '../../modules/UI/selectors.js'
+// import { WiredProgressBar } from '../../modules/UI/components/WiredProgressBar/WiredProgressBar.ui.js'
+// import { getWalletLoadingPercent } from '../../modules/UI/selectors.js'
 import { addWalletStyle } from '../../styles/components/AddWalletStyle.js'
 import { buyMultipleCryptoStyle } from '../../styles/components/BuyCryptoStyle.js'
 import { TwoButtonModalStyle } from '../../styles/indexStyles.js'
@@ -163,7 +163,7 @@ export default class WalletList extends Component<Props, State> {
         <View style={styles.container}>
           <WalletOptions />
           <Gradient style={styles.gradient} />
-          <WiredProgressBar progress={getWalletLoadingPercent} />
+          {/* <WiredProgressBar progress={getWalletLoadingPercent} /> */}
           <WiredBalanceBox
             showBalance={getIsAccountBalanceVisible}
             fiatAmount={getTotalFiatAmountFromExchangeRates}
