@@ -1,4 +1,4 @@
-package co.edgesecure.app;
+package co.satoshiwallet.app;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;

@@ -1,28 +1,27 @@
 {
-  "IMPORTANT_READ_ME": "This is just a placeholder file. Replace with file generated from your Google Firebase account",
   "project_info": {
-    "project_number": "xxxxxxxxxxx",
-    "firebase_url": "https://edge-wallet.firebaseio.com",
-    "project_id": "edge-wallet",
-    "storage_bucket": "edge-wallet.appspot.com"
+    "project_number": "203878080628",
+    "firebase_url": "https://satoshistack.firebaseio.com",
+    "project_id": "satoshistack",
+    "storage_bucket": "satoshistack.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:75822264012:android:82de38b26fb9e235",
+        "mobilesdk_app_id": "1:203878080628:android:c3c88ff3f857a40f",
         "android_client_info": {
-          "package_name": "co.edgesecure.app"
+          "package_name": "co.satoshiwallet.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "11111111111-rs9edgehrhardhbftbuirrtgmhcswl4c.apps.googleusercontent.com",
+          "client_id": "203878080628-hjv8t7fqaub5d0d6n0dugod46jb0bqec.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "replacethisfilereplacethisfilereplaceme"
+          "current_key": "AIzaSyAB185rifYZ0kNmWMySe9F94Ci4I9Hoi4Q"
         }
       ],
       "services": {
