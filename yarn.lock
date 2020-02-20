@@ -3562,7 +3562,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4, create-hmac@^1.1.6, 
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@*, create-react-class@^15.6.3:
+create-react-class@*, create-react-class@^15.6.0, create-react-class@^15.6.3:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   integrity sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==
@@ -4121,22 +4121,22 @@ edge-exchange-plugins@^0.9.0:
     iso4217 "^0.2.0"
     utf8 "^3.0.0"
 
-"edge-login-ui-rn@git://github.com/SatoshiWallet/login-ui.git#294fa04":
-  version "0.6.0"
-  resolved "git://github.com/SatoshiWallet/login-ui.git#294fa042bd7ff9e14b82f594352ffe8f1795bc83"
+"edge-login-ui-rn@git://github.com/SatoshiWallet/login-ui.git#master":
+  version "0.6.6"
+  resolved "git://github.com/SatoshiWallet/login-ui.git#master"
   dependencies:
     edge-components "^0.0.26"
     material-ui "^0.20.0"
     moment "^2.19.3"
     native-base "^2.7.2"
-    qrcode-generator "^1.4.4"
     react-native-device-info "^0.11.0"
     react-native-extra-dimensions-android "^1.2.5"
-    react-native-keyboard-aware-scroll-view "^0.9.1"
+    react-native-keyboard-aware-scroll-view "^0.4.1"
     react-native-linear-gradient "^2.0.0"
     react-native-mail "^3.0.5"
     react-native-material-textfield "git://github.com/EdgeApp/react-native-material-textfield.git"
     react-native-modal "^11.0.1"
+    react-native-qrcode "^0.2.7"
     react-native-vector-icons "^4.4.2"
     react-redux "^5.0.7"
     redux "~3.5.2"
@@ -9573,6 +9573,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+qr.js@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
+  integrity sha1-ys6GOG9ZoNuAUPqQ2baw6IoeNk8=
+
 qrcode-generator@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-1.4.4.tgz#63f771224854759329a99048806a53ed278740e7"
@@ -9736,6 +9741,7 @@ react-native-action-button@^2.8.5:
   integrity sha512-BvGZpzuGeuFR2Y6j93+vKiSqDhsF87VHvNXFs/qEYKfzT4b1ASAT/GQbgS6gNt4jRJCUnJWYrIwlBzRjesZQmQ==
   dependencies:
     prop-types "^15.5.10"
+
 react-native-airship@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/react-native-airship/-/react-native-airship-0.1.1.tgz#c5c3861014e6652c601850f77c5d4e21a8e47c38"
@@ -9883,6 +9889,14 @@ react-native-keyboard-aware-scroll-view@0.5.0:
     prop-types "^15.6.0"
     react-native-iphone-x-helper "^1.0.1"
 
+react-native-keyboard-aware-scroll-view@^0.4.1:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.4.4.tgz#116d08975a84482e4ee64dd0b526a8f04138b0a7"
+  integrity sha512-wRQ9Ji1MNN7bMetkcoRvom5i2+8bH+s8QD/m2TEIZaSRlmsWxu4TKcWwYY+T4WABJn4l0UQM9c8QL0GWa6QTbQ==
+  dependencies:
+    prop-types "^15.6.0"
+    react-native-iphone-x-helper "^1.0.1"
+
 react-native-keyboard-aware-scroll-view@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.1.tgz#9e54b565a5f19b30bed12221d48921781f7630af"
@@ -9938,6 +9952,15 @@ react-native-popup-menu@0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.13.3.tgz#3f4203945acb4954d08d5b50a0345ccc18657eba"
   integrity sha1-P0IDlFrLSVTQjVtQoDRczBhlfro=
+
+react-native-qrcode@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/react-native-qrcode/-/react-native-qrcode-0.2.7.tgz#d103166fb1a5b53643e8bf7b88c0672e689ac4f8"
+  integrity sha512-Xvc3T1h95zA9tbRxiMkKethDYpPwKcqDPIHe9Cxt7pM+lma9dSzd6yXGGLGeZmFU/SmHMK+4bTnDltUv1s4Jnw==
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.5.10"
+    qr.js "0.0.0"
 
 react-native-randombytes@^3.5.0:
   version "3.5.1"
