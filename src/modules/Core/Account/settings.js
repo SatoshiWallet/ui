@@ -24,8 +24,8 @@ export const PASSWORD_RECOVERY_REMINDERS_SHOWN = {
 // Default Account Settings
 export const SYNCED_ACCOUNT_DEFAULTS = {
   autoLogoutTimeInSeconds: 3600,
-  defaultFiat: 'USD',
-  defaultIsoFiat: 'iso:USD',
+  defaultFiat: 'GBP',
+  defaultIsoFiat: 'iso:GBP',
   merchantMode: false,
   preferredSwapPluginId: '',
   countryCode: '',

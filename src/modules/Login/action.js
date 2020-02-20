@@ -95,7 +95,7 @@ export const initializeAccount = (account: EdgeAccount, touchIdInfo: Object) => 
   }
   try {
     let newAccount = false
-    let defaultFiat = Constants.USD_FIAT
+    let defaultFiat = 'iso:GBP'
     if (account.activeWalletIds.length < 1) {
       if (localeInfo.currencyCode && typeof localeInfo.currencyCode === 'string' && localeInfo.currencyCode.length >= 3) {
         defaultFiat = localeInfo.currencyCode
