@@ -10,7 +10,6 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import iconImage from '../../assets/images/otp/OTP-badge_sm.png'
-import WalletIcon from '../../assets/images/walletlist/my-wallets.png'
 import WalletOptions from '../../connectors/WalletOptionsConnector.js'
 import * as Constants from '../../constants/indexConstants.js'
 import { getSpecialCurrencyInfo } from '../../constants/WalletAndCurrencyConstants.js'
@@ -38,8 +37,8 @@ import SortableWalletListRow from '../common/SortableWalletListRow.js'
 import { WiredBalanceBox } from '../common/WiredBalanceBox.js'
 import { StaticModalComponent, TwoButtonTextModalComponent } from '../indexComponents'
 
-const DONE_TEXT = s.strings.string_done_cap
-const WALLETS_HEADER_TEXT = s.strings.fragment_wallets_header
+// const DONE_TEXT = s.strings.string_done_cap
+// const WALLETS_HEADER_TEXT = s.strings.fragment_wallets_header
 const ARCHIVED_TEXT = s.strings.fragmet_wallets_list_archive_title_capitalized
 
 type State = {
@@ -172,7 +171,7 @@ export default class WalletList extends Component<Props, State> {
             exchangeRates={this.props.exchangeRates}
           />
           <View style={[styles.walletsBox]}>
-            <Gradient style={[styles.walletsBoxHeaderWrap]}>
+            {/* <Gradient style={[styles.walletsBoxHeaderWrap]}>
               <View style={[styles.walletsBoxHeaderTextWrap]}>
                 <View style={styles.leftArea}>
                   <Image source={WalletIcon} style={[styles.walletIcon]} />
@@ -181,7 +180,6 @@ export default class WalletList extends Component<Props, State> {
               </View>
 
               <View style={[styles.donePlusContainer, this.state.sortableListExists && styles.donePlusSortable]}>
-                {this.state.sortableListExists && (
                   <Animated.View
                     style={[
                       styles.doneContainer,
@@ -213,7 +211,7 @@ export default class WalletList extends Component<Props, State> {
                   </Animated.View>
                 )}
               </View>
-            </Gradient>
+            </Gradient> */}
 
             {Object.keys(wallets).length > 0 ? (
               this.renderActiveSortableList(activeWalletsArray, activeWalletsObject)
