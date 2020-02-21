@@ -3,14 +3,8 @@
 import React, { Component } from 'react'
 import { Image, ScrollView, Text, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
-import buysellIcon from '../../../../../assets/images/sidenav/buysell.png'
-import exchangeIcon from '../../../../../assets/images/sidenav/exchange.png'
-import logoutImage from '../../../../../assets/images/sidenav/logout.png'
-import receiveIcon from '../../../../../assets/images/sidenav/receive.png'
-import scanIcon from '../../../../../assets/images/sidenav/scan.png'
-import settings from '../../../../../assets/images/sidenav/settings.png'
-import sweepIcon from '../../../../../assets/images/sidenav/sweep.png'
 // import termsIcon from '../../../../../assets/images/sidenav/terms.png'
 import walletIcon from '../../../../../assets/images/sidenav/wallets.png'
 import * as Constants from '../../../../../constants/indexConstants.js'
@@ -86,7 +80,7 @@ const BuyButton = () => {
       <Button.Row>
         <Button.Row>
           <Button.Left>
-            <Image source={buysellIcon} style={styles.iconImage} />
+            <FontAwesomeIcon name="location-arrow" color={styles.iconColor.color} size={styles.iconImage.height} />
           </Button.Left>
 
           <Button.Center>
@@ -126,7 +120,7 @@ const ScanButton = () => {
     <Button onPress={Actions.scan}>
       <Button.Row>
         <Button.Left>
-          <Image source={scanIcon} style={styles.iconImage} />
+          <FontAwesomeIcon name="qrcode" color={styles.iconColor.color} size={styles.iconImage.height} />
         </Button.Left>
 
         <Button.Center>
@@ -147,7 +141,7 @@ const SweepPrivateKeyButton = () => {
     <Button onPress={routeWithData}>
       <Button.Row>
         <Button.Left>
-          <Image source={sweepIcon} style={styles.iconImage} />
+          <FontAwesomeIcon name="key" color={styles.iconColor.color} size={styles.iconImage.height} />
         </Button.Left>
 
         <Button.Center>
@@ -165,7 +159,7 @@ const RequestButton = () => {
     <Button onPress={Actions.request}>
       <Button.Row>
         <Button.Left>
-          <Image source={receiveIcon} style={styles.iconImage} />
+          <FontAwesomeIcon name="arrow-down" color={styles.iconColor.color} size={styles.iconImage.height} />
         </Button.Left>
 
         <Button.Center>
@@ -183,7 +177,7 @@ const ExchangeButton = () => {
     <Button onPress={Actions.exchange}>
       <Button.Row>
         <Button.Left>
-          <Image source={exchangeIcon} style={styles.iconImage} />
+          <FontAwesomeIcon name="exchange" color={styles.iconColor.color} size={styles.iconImage.height} />
         </Button.Left>
 
         <Button.Center>
@@ -219,7 +213,7 @@ const SettingsButton = () => {
     <Button onPress={Actions.settingsOverviewTab}>
       <Button.Row>
         <Button.Left>
-          <Image style={[styles.iconImage, { height: scale(20), width: scale(20) }]} source={settings} />
+          <FontAwesomeIcon name="cog" color={styles.iconColor.color} size={styles.iconImage.height} />
         </Button.Left>
 
         <Button.Center>
@@ -237,7 +231,7 @@ const LogoutButton = ({ onPress }) => {
     <Button onPress={onPress}>
       <Button.Row>
         <Button.Left>
-          <Image style={[styles.iconImage, { height: scale(20), width: scale(20) }]} source={logoutImage} />
+          <FontAwesomeIcon name="sign-out" color={styles.iconColor.color} size={styles.iconImage.height} />
         </Button.Left>
 
         <Button.Center>

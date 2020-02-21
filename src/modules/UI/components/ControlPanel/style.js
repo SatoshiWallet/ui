@@ -33,6 +33,9 @@ export default {
     width: scale(22),
     height: scale(22)
   },
+  iconColor: {
+    color: '#FFFFFF'
+  },
   blockie: {
     width: scale(56),
     height: scale(56),
