@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import { TouchableOpacity } from 'react-native'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 import { showHelpModal } from '../../../../../components/modals/HelpModal.js'
 import s from '../../../../../locales/strings.js'
@@ -16,7 +17,8 @@ export default class HelpButton extends Component<Props> {
   render () {
     return (
       <TouchableOpacity style={styles.sideTextWrap} onPress={() => showHelpModal()}>
-        <T style={[styles.sideText]}>{HELP_TEXT}</T>
+        {/* <T style={[styles.sideText]}>{HELP_TEXT}</T> */}
+        <FontAwesomeIcon name="info" color={styles.helpIcon.color} size={styles.helpIcon.height} style={styles.helpIconStyles} />
       </TouchableOpacity>
     )
   }

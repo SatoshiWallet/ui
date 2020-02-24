@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native'
 
 import { TextAndIconButtonStyle } from '../../../../styles/indexStyles'
 import THEME from '../../../../theme/variables/airbitz'
+import { scale } from '../../../../util/scaling.js'
 
 export default StyleSheet.create({
   headerRoot: {
@@ -37,6 +38,13 @@ export default StyleSheet.create({
   icon: {
     color: THEME.COLORS.WHITE,
     fontSize: 25
+  },
+  helpIcon: {
+    color: THEME.COLORS.WHITE,
+    height: 18
+  },
+  helpIconStyles: {
+    marginLeft: 18
   },
   default: {
     backgroundColor: THEME.COLORS.TRANSPARENT,

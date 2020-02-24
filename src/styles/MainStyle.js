@@ -23,6 +23,13 @@ export const stylesRaw = {
     color: THEME.COLORS.WHITE,
     fontFamily: THEME.FONTS.DEFAULT
   },
+  menuIcon: {
+    height: 22,
+    color: THEME.COLORS.WHITE
+  },
+  menuIconStyle: {
+    marginRight: 15
+  },
   helpModal: {
     flex: 1
   },

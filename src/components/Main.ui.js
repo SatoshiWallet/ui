@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react'
 import { Image, Linking, TouchableWithoutFeedback, View, YellowBox } from 'react-native'
 import { Actions, Drawer, Router, Scene, Stack, Tabs } from 'react-native-router-flux'
 import slowlog from 'react-native-slowlog'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 import * as URI from 'uri-js'
 
@@ -759,7 +760,7 @@ export default class Main extends Component<Props> {
   renderMenuButton = () => {
     return (
       <TouchableWithoutFeedback onPress={this.props.openDrawer}>
-        <Image source={MenuIcon} />
+        <FontAwesomeIcon name="bars" color={styles.menuIcon.color} size={styles.menuIcon.height} style={styles.menuIconStyle} />
       </TouchableWithoutFeedback>
     )
   }
