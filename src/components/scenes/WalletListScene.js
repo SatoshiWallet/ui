@@ -2,7 +2,7 @@
 
 import { createYesNoModal } from 'edge-components'
 import React, { Component } from 'react'
-import { ActivityIndicator, Alert, Animated, FlatList, Image, Linking, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Alert, Animated, FlatList, Image, Linking, Text, TouchableOpacity, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import slowlog from 'react-native-slowlog'
 import SortableListView from 'react-native-sortable-listview'
@@ -10,7 +10,6 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import iconImage from '../../assets/images/otp/OTP-badge_sm.png'
-import WalletIcon from '../../assets/images/walletlist/my-wallets.png'
 import WalletOptions from '../../connectors/WalletOptionsConnector.js'
 import * as Constants from '../../constants/indexConstants.js'
 import { getSpecialCurrencyInfo } from '../../constants/WalletAndCurrencyConstants.js'
@@ -20,17 +19,12 @@ import T from '../../modules/UI/components/FormattedText/index'
 import Gradient from '../../modules/UI/components/Gradient/Gradient.ui'
 import { Icon } from '../../modules/UI/components/Icon/Icon.ui.js'
 import SafeAreaView from '../../modules/UI/components/SafeAreaView/index.js'
-// import { WiredProgressBar } from '../../modules/UI/components/WiredProgressBar/WiredProgressBar.ui.js'
-// import { getWalletLoadingPercent } from '../../modules/UI/selectors.js'
-import { addWalletStyle } from '../../styles/components/AddWalletStyle.js'
-import { buyMultipleCryptoStyle } from '../../styles/components/BuyCryptoStyle.js'
 import { TwoButtonModalStyle } from '../../styles/indexStyles.js'
 import styles from '../../styles/scenes/WalletListStyle'
 import THEME from '../../theme/variables/airbitz'
 import { type AppMessage, type AppTweaks, getActiveMessage } from '../../types/AppTweaks.js'
 import type { GuiWalletType } from '../../types/types.js'
 import { type DeviceDimensions } from '../../types/types.js'
-import { scale } from '../../util/scaling.js'
 import { getObjectDiff, getTotalFiatAmountFromExchangeRates } from '../../util/utils'
 import FullWalletListRow from '../common/FullWalletListRow.js'
 import { launchModal } from '../common/ModalProvider.js'
@@ -39,7 +33,6 @@ import { WiredBalanceBox } from '../common/WiredBalanceBox.js'
 import { StaticModalComponent, TwoButtonTextModalComponent } from '../indexComponents'
 
 const DONE_TEXT = s.strings.string_done_cap
-const WALLETS_HEADER_TEXT = s.strings.fragment_wallets_header
 const ARCHIVED_TEXT = s.strings.fragmet_wallets_list_archive_title_capitalized
 
 type State = {
@@ -173,13 +166,6 @@ export default class WalletList extends Component<Props, State> {
           />
           <View style={[styles.walletsBox]}>
             <Gradient style={[styles.walletsBoxHeaderWrap]}>
-              <View style={[styles.walletsBoxHeaderTextWrap]}>
-                <View style={styles.leftArea}>
-                  <Image source={WalletIcon} style={[styles.walletIcon]} />
-                  <T style={styles.walletsBoxHeaderText}>{WALLETS_HEADER_TEXT}</T>
-                </View>
-              </View>
-
               <View style={[styles.donePlusContainer, this.state.sortableListExists && styles.donePlusSortable]}>
                 {this.state.sortableListExists && (
                   <Animated.View
@@ -206,9 +192,17 @@ export default class WalletList extends Component<Props, State> {
                       }
                     ]}
                   >
-                    <View style={styles.plusSpacer} />
                     <TouchableOpacity style={[styles.walletsBoxHeaderAddWallet]} onPress={Actions[Constants.CREATE_WALLET_SELECT_CRYPTO]}>
-                      <Ionicon name="md-add" style={[styles.dropdownIcon]} size={28} color="white" />
+                      <View style={styles.fab}>
+                        <Ionicon name="md-add" style={[styles.dropdownIcon]} size={24} color="white" />
+                        <T style={[styles.walletsBoxDoneText]}>{s.strings.wallet_list_add_wallet}</T>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.walletsBoxHeaderAddWallet]} onPress={this.addToken}>
+                      <View style={styles.fab}>
+                        <Ionicon name="md-add" style={[styles.dropdownIcon]} size={24} color="white" />
+                        <T style={[styles.walletsBoxDoneText]}>{s.strings.wallet_list_add_token}</T>
+                      </View>
                     </TouchableOpacity>
                   </Animated.View>
                 )}
@@ -308,7 +302,7 @@ export default class WalletList extends Component<Props, State> {
               renderItem={this.renderItem}
               sortableMode={this.state.sortableMode}
               executeWalletRowOption={this.executeWalletRowOption}
-              ListFooterComponent={this.renderFooter()}
+              ListFooterComponent={null}
               ListHeaderComponent={this.renderPromoCard()}
             />
           </Animated.View>
@@ -477,37 +471,6 @@ export default class WalletList extends Component<Props, State> {
         return Alert.alert(s.strings.create_wallet_invalid_input, s.strings.create_wallet_select_valid_crypto)
       }
     }
-  }
-
-  renderFooter = () => {
-    return (
-      <View style={buyMultipleCryptoStyle.multipleCallToActionWrap}>
-        <View style={{ flexDirection: 'row', alignItems: 'stretch' }}>
-          <TouchableWithoutFeedback onPress={Actions[Constants.CREATE_WALLET_SELECT_CRYPTO]} style={addWalletStyle.addWalletButton}>
-            <View style={addWalletStyle.addWalletContentWrap}>
-              <Ionicon name="md-add-circle" style={addWalletStyle.addWalletIcon} size={scale(24)} color={THEME.COLORS.GRAY_2} />
-              <T style={addWalletStyle.addWalletText}>{s.strings.wallet_list_add_wallet}</T>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={this.addToken} style={addWalletStyle.addWalletButton}>
-            <View style={addWalletStyle.addTokenContentWrap}>
-              <Ionicon name="md-add-circle" style={addWalletStyle.addWalletIcon} size={scale(24)} color={THEME.COLORS.GRAY_2} />
-              <T style={addWalletStyle.addWalletText}>{s.strings.wallet_list_add_token}</T>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-        <TouchableWithoutFeedback onPress={Actions[Constants.PLUGIN_BUY]} style={buyMultipleCryptoStyle.buyMultipleCryptoContainer}>
-          <View style={buyMultipleCryptoStyle.buyMultipleCryptoBox}>
-            <View style={buyMultipleCryptoStyle.buyMultipleCryptoContentWrap}>
-              <Image style={buyMultipleCryptoStyle.buyMultipleCryptoBoxImage} source={{ uri: Constants.CURRENCY_SYMBOL_IMAGES['BTC'] }} resizeMode={'cover'} />
-              <Image style={buyMultipleCryptoStyle.buyMultipleCryptoBoxImage} source={{ uri: Constants.CURRENCY_SYMBOL_IMAGES['ETH'] }} resizeMode={'cover'} />
-              <Image style={buyMultipleCryptoStyle.buyMultipleCryptoBoxImage} source={{ uri: Constants.CURRENCY_SYMBOL_IMAGES['BCH'] }} resizeMode={'cover'} />
-            </View>
-            <T style={buyMultipleCryptoStyle.buyMultipleCryptoBoxText}>{s.strings.title_plugin_buy}</T>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-    )
   }
 
   renderPromoCard () {

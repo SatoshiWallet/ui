@@ -24,8 +24,7 @@ export const styles = {
     paddingLeft: scale(12),
     paddingRight: scale(6),
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: scale(50)
+    justifyContent: 'space-between'
   },
   walletsBoxHeaderTextWrap: {
     paddingVertical: scale(12)
@@ -45,18 +44,16 @@ export const styles = {
     marginLeft: scale(16)
   },
   donePlusContainer: {
-    width: scale(132),
-    height: scale(50),
+    flex: 1,
     marginRight: scale(7)
   },
   donePlusSortable: {
+    height: scale(52),
     alignItems: 'flex-end'
   },
   plusContainer: {
-    position: 'absolute',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: scale(50),
+    justifyContent: 'flex-end',
+    height: 'auto',
     flexDirection: 'row',
     width: '100%'
   },
@@ -73,12 +70,19 @@ export const styles = {
   walletsBoxHeaderAddWallet: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    top: 0,
-    left: 0,
+    alignItems: 'flex-end',
     height: '100%',
-    paddingVertical: scale(12),
-    width: scale(82)
+    paddingVertical: scale(12)
+  },
+  fab: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: THEME.COLORS.PRIMARY,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    marginLeft: 7,
+    borderRadius: 15
   },
   toggleFiatText: {
     color: THEME.COLORS.WHITE,
@@ -96,15 +100,13 @@ export const styles = {
     paddingVertical: scale(12)
   },
   walletsBoxDoneText: {
-    fontSize: scale(18),
+    fontSize: scale(15),
+    lineHeight: scale(15),
     color: THEME.COLORS.WHITE,
-    backgroundColor: THEME.COLORS.TRANSPARENT,
-    top: 0,
-    left: 0
+    backgroundColor: THEME.COLORS.TRANSPARENT
   },
   dropdownIcon: {
-    textAlignVertical: 'center',
-    alignSelf: 'center',
+    paddingRight: 10,
     backgroundColor: THEME.COLORS.TRANSPARENT
   },
   archiveBoxHeaderWrap: {
