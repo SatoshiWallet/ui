@@ -275,7 +275,7 @@ export default class WalletList extends Component<Props, State> {
 
   renderActiveSortableList = (activeWalletsArray: Array<{ key: string }>, activeWalletsObject: {}) => {
     return (
-      <View style={styles.listsContainer}>
+      <Gradient style={styles.listsContainer}>
         {this.state.sortableListExists && (
           <Animated.View
             testID={'sortableList'}
@@ -307,7 +307,7 @@ export default class WalletList extends Component<Props, State> {
             />
           </Animated.View>
         )}
-      </View>
+      </Gradient>
     )
   }
 
