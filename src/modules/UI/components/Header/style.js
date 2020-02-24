@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native'
 
 import { TextAndIconButtonStyle } from '../../../../styles/indexStyles'
 import THEME from '../../../../theme/variables/airbitz'
-import { scale } from '../../../../util/scaling.js'
 
 export default StyleSheet.create({
   headerRoot: {
