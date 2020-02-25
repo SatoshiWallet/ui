@@ -19,7 +19,7 @@ export const styles = {
       alignItems: 'center',
       justifyContent: 'space-around',
       height: scale(26),
-      backgroundColor: THEME.COLORS.PRIMARY
+      backgroundColor: THEME.COLORS.TRANSPARENT
     },
     containerError: {
       display: 'flex',
