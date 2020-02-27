@@ -49,7 +49,8 @@ export const textSize = {
 const tweakRules = {
   bold: { fontFamily: THEME.FONTS.BOLD },
   small: { fontSize: textSize.small },
-  large: { fontSize: textSize.large }
+  large: { fontSize: textSize.large },
+  largest: { fontSize: textSize.largest }
 }
 
 // Alignment schemes:

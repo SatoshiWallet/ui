@@ -3,16 +3,17 @@
 import React, { Component } from 'react'
 import { Linking, Text } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import { WebView } from 'react-native-webview'
 
 import s from '../../locales/strings.js'
 import { Airship } from '../services/AirshipInstance.js'
-import { type AirshipBridge, AirshipModal, ContentArea, dayText, IconCircle, ModalCloseArrow, textSize, THEME } from './modalParts.js'
+import { type AirshipBridge, AirshipModal, ContentArea, dayText, ModalCloseArrow, textSize, THEME } from './modalParts.js'
 
 const buildNumber = DeviceInfo.getBuildNumber()
 const versionNumber = DeviceInfo.getVersion()
-const CONTENT_URI = 'https://edgesecure.co/info.html'
+const SUPPORT_URI = 'https://support.satoshipoint.io'
+const TICKET_URI = 'https://support.satoshipoint.io/hc/en-us/requests/new'
+const REGISTER_URI = 'https://satoshipass.io'
 
 export function showHelpModal (): Promise<mixed> {
   return Airship.show(bridge => <HelpModal bridge={bridge} />)
@@ -30,24 +31,41 @@ class HelpModal extends Component<Props> {
 
     return (
       <AirshipModal bridge={bridge} onCancel={() => bridge.resolve()}>
-        <IconCircle>
-          <AntDesignIcon name="question" size={THEME.rem(2)} color={THEME.COLORS.SECONDARY} style={{ marginLeft: THEME.rem(0.1) }} />
-        </IconCircle>
-
         <ContentArea grow>
-          <Text style={dayText('title')}>{s.strings.help_modal_title}</Text>
-          <WebView
-            onNavigationStateChange={event => {
-              if (!event.url.includes('info.html')) {
-                if (this.webview) this.webview.stopLoading()
-                Linking.openURL(event.url)
-                bridge.resolve()
-              }
-            }}
-            ref={element => (this.webview = element)}
-            source={{ uri: CONTENT_URI }}
-          />
+          <Text style={[dayText('center', 'largest'), { marginTop: 25, letterSpacing: -0.7 }]}>
+            Satoshi
+            <Text style={{ fontWeight: '300', color: THEME.COLORS.ACCENT_BLUE }}>Wallet</Text>
+          </Text>
           <Text style={[dayText('center', 'small'), { lineHeight: textSize.large }]}>
+            Built and maintained by
+            {'\n'}
+            SatoshiPoint in London, UK
+            {'\n\n\n'}
+            Need support?
+          </Text>
+          <Text
+            style={[dayText('center', 'small'), { lineHeight: textSize.large, color: THEME.COLORS.ACCENT_BLUE }]}
+            onPress={() => Linking.openURL(SUPPORT_URI)}
+          >
+            Visit the support centre
+          </Text>
+          <Text
+            style={[dayText('center', 'small'), { lineHeight: textSize.large, color: THEME.COLORS.ACCENT_BLUE }]}
+            onPress={() => Linking.openURL(TICKET_URI)}
+          >
+            Open a support ticket
+          </Text>
+          <Text style={[dayText('center', 'small'), { lineHeight: textSize.large }]}>
+            {'\n'}
+            Want to use a SatoshiPoint ATM?
+          </Text>
+          <Text
+            style={[dayText('center', 'small'), { lineHeight: textSize.large, color: THEME.COLORS.ACCENT_BLUE }]}
+            onPress={() => Linking.openURL(REGISTER_URI)}
+          >
+            Register here
+          </Text>
+          <Text style={[dayText('center', 'small'), { lineHeight: textSize.large, position: 'absolute', bottom: 10 }]}>
             {s.strings.help_version} {versionNumber}
             {'\n'}
             {s.strings.help_build} {buildNumber}
