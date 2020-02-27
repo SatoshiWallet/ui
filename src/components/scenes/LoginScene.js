@@ -7,7 +7,7 @@ import { Keyboard, StatusBar, StyleSheet, View } from 'react-native'
 import slowlog from 'react-native-slowlog'
 
 import edgeBackgroundImage from '../../assets/images/edgeBackground/login_bg.jpg'
-import edgeLogo from '../../assets/images/edgeLogo/Edge_logo_L.png'
+import edgeLogo from '../../assets/images/edgeLogo/S_Wallet_logo_L.png'
 import s from '../../locales/strings.js'
 import THEME from '../../theme/variables/airbitz.js'
 import { showHelpModal } from '../modals/HelpModal.js'
