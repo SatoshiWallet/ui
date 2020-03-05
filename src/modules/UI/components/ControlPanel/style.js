@@ -44,7 +44,8 @@ export default {
   frame: {
     borderRadius: scale(28),
     borderColor: THEME.COLORS.WHITE,
-    borderWidth: scale(1)
+    borderWidth: scale(1),
+    overflow: 'hidden'
   },
   userName: {
     fontSize: scale(22)
