@@ -1,7 +1,7 @@
 // @flow
 import makeBlockie from 'ethereum-blockies-base64'
 import React, { Component } from 'react'
-import { Image, Linking, Text } from 'react-native'
+import { Image, Linking, Text, View } from 'react-native'
 
 import { SceneWrapper } from '../../../../components/common/SceneWrapper.js'
 import type { GuiDenomination } from '../../../../types/types.js'
@@ -44,7 +44,9 @@ export default class ControlPanel extends Component<Props> {
         <Button onPress={() => Linking.openURL('https://satoshipass.io')} style={styles.toggleButton} underlayColor={styles.underlay.color}>
           <Button.Row>
             <Button.Left>
-              <Image style={styles.blockie} resizeMode={'contain'} source={{ uri: makeBlockie('SatoshiWallet Username: ' + this.props.username) }} />
+              <View style={styles.frame}>
+                <Image style={styles.blockie} resizeMode={'cover'} source={{ uri: makeBlockie('SatoshiWallet Username: ' + this.props.username) }} />
+              </View>
             </Button.Left>
 
             <Button.Center>

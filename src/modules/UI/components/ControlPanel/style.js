@@ -39,10 +39,12 @@ export default {
   blockie: {
     width: scale(56),
     height: scale(56),
+    borderRadius: scale(28)
+  },
+  frame: {
     borderRadius: scale(28),
-    borderWidth: scale(1),
-    padding: scale(1),
-    borderColor: THEME.COLORS.WHITE
+    borderColor: THEME.COLORS.WHITE,
+    borderWidth: scale(1)
   },
   userName: {
     fontSize: scale(22)
