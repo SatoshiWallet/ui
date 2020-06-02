@@ -24,7 +24,9 @@ export const styles = {
     paddingLeft: scale(12),
     paddingRight: scale(6),
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    // Hack to avoid 1px border appearing on iPhone
+    marginBottom: -1
   },
   walletsBoxHeaderTextWrap: {
     paddingVertical: scale(12)
@@ -157,27 +159,33 @@ export const styles = {
     paddingHorizontal: scale(20),
     justifyContent: 'space-between',
     borderBottomWidth: scale(1),
-    borderColor: THEME.COLORS.WHITE
+    borderColor: THEME.COLORS.TRANSPARENT
   },
   fullList: {
     flex: 1,
-    // position: 'absolute',
     height: PLATFORM.usableHeight - scale(130) - scale(50)
   },
   rowContainer: {
-    padding: scale(6),
     paddingLeft: scale(8),
-    height: scale(106),
-    backgroundColor: THEME.COLORS.WHITE,
-    borderBottomWidth: scale(1),
-    borderBottomColor: THEME.COLORS.GRAY_3
+    paddingRight: scale(8),
+    paddingBottom: scale(10),
+    backgroundColor: THEME.COLORS.TRANSPARENT
+  },
+  sortableRowContainer: {
+    paddingLeft: scale(8),
+    backgroundColor: THEME.COLORS.TRANSPARENT
   },
   rowContent: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    padding: scale(15),
+    backgroundColor: THEME.COLORS.WHITE,
+    borderRadius: scale(15)
   },
   sortableRowContent: {
-    paddingRight: scale(32)
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: THEME.COLORS.WHITE
   },
   rowIconWrap: {
     alignItems: 'center',
@@ -289,7 +297,7 @@ export const styles = {
     alignItems: 'stretch',
     marginTop: 0,
     marginBottom: 0,
-    borderBottomColor: THEME.COLORS.GRAY_4,
+    borderBottomColor: THEME.COLORS.TRANSPARENT,
     borderBottomWidth: Platform.OS === 'ios' ? scale(1) : 0
   },
   nameInput: {
@@ -339,14 +347,12 @@ export const styles = {
   doneButton: {
     color: THEME.COLORS.PRIMARY
   },
-  // beginning of token rows //
+  // beginning of token rows
   tokenRowContainer: {
-    padding: scale(6),
     paddingLeft: scale(8),
-    height: scale(106),
-    backgroundColor: THEME.COLORS.GRAY_4,
-    borderBottomWidth: 1,
-    borderColor: THEME.COLORS.GRAY_3
+    paddingRight: scale(8),
+    paddingBottom: scale(10),
+    backgroundColor: THEME.COLORS.TRANSPARENT
   },
   tokenRowContent: {
     justifyContent: 'space-between',
@@ -359,7 +365,7 @@ export const styles = {
     fontSize: scale(16),
     color: THEME.COLORS.GRAY_1
   },
-  // end of token rows //,,
+  // end of token rows
 
   activeOpacity: {
     opacity: THEME.OPACITY.ACTIVE
@@ -378,7 +384,7 @@ export const styles = {
     paddingRight: scale(20),
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderColor: THEME.COLORS.GRAY_4
+    borderColor: THEME.COLORS.TRANSPARENT
   },
   emptyRowUnderlay: {
     color: THEME.COLORS.ROW_PRESSED
@@ -391,7 +397,7 @@ export const styles = {
     color: THEME.COLORS.SECONDARY
   },
 
-  // beginning of wallet list progress dropdown //
+  // beginning of wallet list progress dropdown
   walletListProgressDropdown: {
     width: '100%',
     top: THEME.HEADER
@@ -419,7 +425,7 @@ export const styles = {
   },
   walletDetailsRowLine: {
     height: 1,
-    borderColor: 'rgba(14, 75, 117, 0.5)',
+    borderColor: THEME.COLORS.TRANSPARENT,
     borderBottomWidth: 1,
     marginTop: scale(12),
     marginBottom: scale(9)
@@ -473,7 +479,7 @@ export const styles = {
     flex: 1
   },
 
-  // Promo area:
+  // Promo area
   promoArea: {
     padding: THEME.rem(0.5)
   },

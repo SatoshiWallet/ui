@@ -52,12 +52,12 @@ class SortableWalletListRow extends Component<Props, State> {
 
     return (
       <TouchableHighlight
-        style={[styles.rowContainer, styles.sortableWalletListRow]}
+        style={[styles.sortableRowContainer, styles.sortableWalletListRow]}
         underlayColor={styleRaw.walletRowUnderlay.color}
         {...this.props.sortHandlers}
       >
         {walletData.currencyCode ? (
-          <View style={[styles.rowContent]}>
+          <View style={[styles.sortableRowContent]}>
             <View style={[styles.rowDragArea]}>
               <Image source={sort} style={styles.rowDragIcon} />
             </View>

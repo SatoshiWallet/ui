@@ -2,7 +2,7 @@
 
 import { bns } from 'biggystring'
 import React, { Component } from 'react'
-import { ActivityIndicator, Image, TouchableHighlight, View } from 'react-native'
+import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import slowlog from 'react-native-slowlog'
 import { connect } from 'react-redux'
@@ -15,6 +15,7 @@ import s from '../../locales/strings.js'
 import { SYNCED_ACCOUNT_DEFAULTS } from '../../modules/Core/Account/settings.js'
 import * as SETTINGS_SELECTORS from '../../modules/Settings/selectors'
 import T from '../../modules/UI/components/FormattedText/index'
+import Gradient from '../../modules/UI/components/Gradient/Gradient.ui'
 import { calculateWalletFiatBalanceWithoutState } from '../../modules/UI/selectors.js'
 import styles, { customWalletListOptionsStyles, styles as styleRaw } from '../../styles/scenes/WalletListStyle.js'
 import type { State } from '../../types/reduxTypes.js'
@@ -173,9 +174,9 @@ class FullWalletListRowLoadedComponent extends Component<FullWalletListRowLoaded
     }
 
     return (
-      <View style={[{ width: '100%' }]}>
+      <Gradient style={[{ width: '100%' }]}>
         <View>
-          <TouchableHighlight
+          <TouchableOpacity
             style={[styles.rowContainer]}
             underlayColor={styleRaw.walletRowUnderlay.color}
             onPress={() => this._onPressSelectWallet(id, currencyCode, walletData.receiveAddress.publicAddress)}
@@ -217,10 +218,10 @@ class FullWalletListRowLoadedComponent extends Component<FullWalletListRowLoaded
                 />
               </View>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
           {this.renderTokenRow(id, enabledNativeBalances, progress)}
         </View>
-      </View>
+      </Gradient>
     )
   }
 
@@ -297,13 +298,13 @@ const FullWalletListRowConnected = connect(
 class FullListRowEmptyData extends Component<any> {
   render () {
     return (
-      <TouchableHighlight style={[styles.rowContainer, styles.emptyRow]} underlayColor={styleRaw.emptyRowUnderlay.color}>
+      <TouchableOpacity style={[styles.rowContainer, styles.emptyRow]} underlayColor={styleRaw.emptyRowUnderlay.color}>
         <View style={[styles.rowContent]}>
           <View style={[styles.rowNameTextWrap]}>
             <ActivityIndicator style={{ height: 18, width: 18 }} color="#F7902F" />
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 }
