@@ -1,16 +1,18 @@
 // @flow
 
+import LottieView from 'lottie-react-native'
 import React, { PureComponent } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import slowlog from 'react-native-slowlog'
 import { connect } from 'react-redux'
 
-import s from '../../locales/strings.js'
+// import s from '../../locales/strings.js'
 import T from '../../modules/UI/components/FormattedText/index'
 import Gradient from '../../modules/UI/components/Gradient/Gradient.ui'
 import { styles } from '../../styles/components/WiredBalanceBoxStyle.js'
 import { type State } from '../../types/reduxTypes.js'
 import { getFiatSymbol } from '../../util/utils.js'
+const animation = require('./animation.json')
 
 type BalanceBoxState = {}
 
@@ -66,9 +68,13 @@ class BalanceBox extends PureComponent<BalanceBoxProps, BalanceBoxState> {
 
     return (
       <Gradient>
-        <TouchableOpacity onPress={this.props.onPress}>{displayedBox}</TouchableOpacity>
+        <TouchableOpacity onPress={this.balancePressed}>{displayedBox}</TouchableOpacity>
       </Gradient>
     )
+  }
+
+  balancePressed () {
+    return true
   }
 
   balanceBox (fiatBalanceString: string) {
@@ -86,19 +92,15 @@ class BalanceBox extends PureComponent<BalanceBoxProps, BalanceBoxState> {
   noBalanceBox (textType: string) {
     let displayedText
     if (textType === 'noExchangeRates') {
-      displayedText = s.strings.exchange_rates_loading
+      displayedText = <LottieView style={{ height: 150 }} source={animation} autoPlay loop />
     } else {
-      displayedText = s.strings.string_show_balance
+      displayedText = <LottieView style={{ height: 150 }} source={animation} autoPlay loop />
     }
 
     return (
       <View style={[styles.totalBalanceBox]}>
         <View style={[styles.totalBalanceWrap]}>
-          <View style={[styles.hiddenBalanceBoxDollarsWrap]}>
-            <T numberOfLines={2} style={textType === 'noExchangeRates' ? styles.currentBalanceBoxNoExchangeRates : styles.currentBalanceBoxDollars}>
-              {displayedText}
-            </T>
-          </View>
+          <View style={[styles.hiddenBalanceBoxDollarsWrap]}>{displayedText}</View>
         </View>
       </View>
     )

@@ -25,7 +25,7 @@ const SafeAreaViewComponent = ({ style, children }: props) => {
           right: 0,
           left: 0,
           height: THEME.HEADER,
-          zIndex: -1000
+          zIndex: 999
         }}
       />
     </SafeAreaView>

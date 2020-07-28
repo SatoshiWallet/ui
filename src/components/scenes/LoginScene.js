@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: THEME.COLORS.TRANSPARENT
+    backgroundColor: THEME.COLORS.GRADIENT.LIGHT
   }
 })

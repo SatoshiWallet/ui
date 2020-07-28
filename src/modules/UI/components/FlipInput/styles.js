@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   container: {
     width: '90%',
     minHeight: PLATFORM.platform === 'ios' ? scale(110) : scale(120),
-    backgroundColor: THEME.COLORS.BLUE_3,
+    backgroundColor: THEME.COLORS.TRANSPARENT,
     borderRadius: 5,
     flexDirection: 'column',
     alignSelf: 'center',

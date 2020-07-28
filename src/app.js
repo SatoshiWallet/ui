@@ -3,18 +3,11 @@
 
 import { Client } from 'bugsnag-react-native'
 import React from 'react'
-import { Platform, StatusBar, Text, TextInput } from 'react-native'
+import { Platform, Text, TextInput } from 'react-native'
 import RNFS from 'react-native-fs'
 
 import ENV from '../env.json'
 import { log, logToServer } from './util/logger'
-
-// Set up the transparent status bar at boot time on Android:
-StatusBar.setBarStyle('light-content')
-if (StatusBar.setTranslucent != null) {
-  StatusBar.setTranslucent(true)
-  StatusBar.setBackgroundColor('#00000000')
-}
 
 const ENABLE_WHY_DID_YOU_UPDATE = false
 const ENABLE_PERF_LOGGING = false

@@ -128,7 +128,7 @@ const strings = {
   fragmet_wallets_list_archive_title_capitalized: 'Archive',
   fragment_wallets_syncing_wallet_txs: 'Synchronizing wallet transactions...',
   wallet_list_add_wallet: 'Add Wallet',
-  wallet_list_add_token: 'Add Token',
+  wallet_list_add_token: 'Tokens',
   wallet_list_add_token_modal_title: 'Ethereum or RSK Wallet Needed',
   wallet_list_add_token_modal_message: 'Please create an Ethereum or RSK wallet first to hold your tokens',
   create_wallet_choice_instructions: 'Create a new wallet, or restore an existing wallet using the private seed?',

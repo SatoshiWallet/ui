@@ -8,7 +8,7 @@ import { scale } from '../../util/scaling.js'
 export const rawStyles = {
   totalBalanceBox: {
     // one
-    height: scale(111),
+    height: scale(65),
     justifyContent: 'center'
   },
   totalBalanceWrap: {

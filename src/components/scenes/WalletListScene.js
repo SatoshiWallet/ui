@@ -164,8 +164,8 @@ export default class WalletList extends Component<Props, State> {
             onPress={this.props.toggleAccountBalanceVisibility}
             exchangeRates={this.props.exchangeRates}
           />
-          <View style={[styles.walletsBox]}>
-            <Gradient style={[styles.walletsBoxHeaderWrap]}>
+          <View style={[styles.walletsBox, { overflow: 'visible' }]}>
+            <Gradient style={[styles.walletsBoxHeaderWrap, { zIndex: 0 }]}>
               <View style={[styles.donePlusContainer, this.state.sortableListExists && styles.donePlusSortable]}>
                 {this.state.sortableListExists && (
                   <Animated.View
@@ -294,7 +294,7 @@ export default class WalletList extends Component<Props, State> {
           </Animated.View>
         )}
         {this.state.fullListExists && (
-          <Animated.View testID={'fullList'} style={[{ flex: 1, opacity: this.state.fullListOpacity, zIndex: this.state.fullListZIndex }, styles.fullList]}>
+          <Animated.View testID={'fullList'} style={[{ flex: 1, opacity: this.state.fullListOpacity }, styles.fullList]}>
             <FlatList
               style={styles.sortableWalletListContainer}
               data={activeWalletsArray}
@@ -304,6 +304,7 @@ export default class WalletList extends Component<Props, State> {
               executeWalletRowOption={this.executeWalletRowOption}
               ListFooterComponent={null}
               ListHeaderComponent={this.renderPromoCard()}
+              removeClippedSubviews={false}
             />
           </Animated.View>
         )}

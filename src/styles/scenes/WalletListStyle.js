@@ -9,7 +9,8 @@ import { scale, scaleH } from '../../util/scaling.js'
 
 export const styles = {
   gradient: {
-    height: THEME.HEADER
+    height: THEME.HEADER,
+    zIndex: 9999
   },
   container: {
     flex: 1,
@@ -84,7 +85,16 @@ export const styles = {
     paddingHorizontal: 15,
     paddingVertical: 5,
     marginLeft: 7,
-    borderRadius: 15
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7
   },
   toggleFiatText: {
     color: THEME.COLORS.WHITE,
@@ -137,14 +147,16 @@ export const styles = {
   },
   sortableWalletListContainer: {
     flex: 1,
-    width: '100%'
+    width: '100%',
+    zIndex: 1
   },
   sortableWalletList: {
     flexDirection: 'column',
     alignContent: 'stretch'
   },
   listsContainer: {
-    flex: 1
+    flex: 1,
+    zIndex: 99
   },
   sortableList: {
     flex: 1,
@@ -169,6 +181,7 @@ export const styles = {
     paddingLeft: scale(8),
     paddingRight: scale(8),
     paddingBottom: scale(10),
+    height: scale(125),
     backgroundColor: THEME.COLORS.TRANSPARENT
   },
   sortableRowContainer: {
@@ -179,13 +192,21 @@ export const styles = {
     flex: 1,
     flexDirection: 'row',
     padding: scale(15),
-    backgroundColor: THEME.COLORS.WHITE,
-    borderRadius: scale(15)
+    backgroundColor: 'rgba(243,246,246,1)',
+    borderRadius: scale(15),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10
   },
   sortableRowContent: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: THEME.COLORS.WHITE
+    backgroundColor: 'rgba(243,246,246,1)'
   },
   rowIconWrap: {
     alignItems: 'center',
@@ -352,11 +373,8 @@ export const styles = {
     paddingLeft: scale(8),
     paddingRight: scale(8),
     paddingBottom: scale(10),
+    height: scale(125),
     backgroundColor: THEME.COLORS.TRANSPARENT
-  },
-  tokenRowContent: {
-    justifyContent: 'space-between',
-    flexDirection: 'row'
   },
   tokenRowNameTextWrap: {
     justifyContent: 'center'
@@ -368,16 +386,16 @@ export const styles = {
   // end of token rows
 
   activeOpacity: {
-    opacity: THEME.OPACITY.ACTIVE
+    opacity: 0
   },
   walletRowUnderlay: {
-    color: THEME.COLORS.ROW_PRESSED
+    color: THEME.COLORS.TRANSPARENT
   },
   tokenRowUnderlay: {
-    color: THEME.COLORS.ROW_PRESSED
+    color: THEME.COLORS.TRANSPARENT
   },
   emptyRow: {
-    height: scale(60),
+    height: scale(125),
     backgroundColor: THEME.COLORS.WHITE,
     padding: scale(16),
     paddingLeft: scale(20),

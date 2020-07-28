@@ -56,4 +56,10 @@ target 'edge' do
   pod 'RNSound', :path => '../node_modules/react-native-sound'
   pod 'RNStoreReview', :path => '../node_modules/react-native-store-review/ios'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'lottie-ios', :path => '../node_modules/lottie-ios'
+
+
+
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
 end

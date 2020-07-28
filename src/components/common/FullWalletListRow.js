@@ -2,7 +2,7 @@
 
 import { bns } from 'biggystring'
 import React, { Component } from 'react'
-import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, TouchableHighlight, View } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import slowlog from 'react-native-slowlog'
 import { connect } from 'react-redux'
@@ -175,52 +175,50 @@ class FullWalletListRowLoadedComponent extends Component<FullWalletListRowLoaded
 
     return (
       <Gradient style={[{ width: '100%' }]}>
-        <View>
-          <TouchableOpacity
-            style={[styles.rowContainer]}
-            underlayColor={styleRaw.walletRowUnderlay.color}
-            onPress={() => this._onPressSelectWallet(id, currencyCode, walletData.receiveAddress.publicAddress)}
-          >
-            <View style={[styles.rowContent]}>
-              <View style={styles.rowIconWrap}>
-                {symbolImageDarkMono && <Image style={[styles.rowCurrencyLogoAndroid]} source={{ uri: symbolImageDarkMono }} resizeMode="cover" />}
-                <View style={styles.rowCurrencyLogoAndroid}>
-                  <ProgressPie size={styles.rowCurrencyOverlaySize} color={'rgba(255, 255, 255, 0.75)'} progress={progress} />
-                </View>
-              </View>
-              <View style={styles.walletDetailsContainer}>
-                <View style={styles.walletDetailsRow}>
-                  <T style={[styles.walletDetailsRowCurrency]}>{currencyCode}</T>
-                  <T style={[styles.walletDetailsRowValue]}>{finalCryptoAmountString}</T>
-                </View>
-                <View style={styles.walletDetailsRow}>
-                  <T style={[styles.walletDetailsRowName]}>{name}</T>
-                  <View style={styles.walletDetailsFiatBalanceRow}>
-                    <T style={[styles.walletDetailsRowFiat]}>{fiatBalanceSymbol}</T>
-                    <T style={[styles.walletDetailsRowFiat]}>{fiatBalanceString}</T>
-                  </View>
-                </View>
-                <View style={styles.walletDetailsRowLine} />
-                <View style={styles.walletDetailsRow}>
-                  <View style={styles.walletDetailsExchangeRow}>
-                    <T style={[styles.walletDetailsRowExchangeRate]}>{exchangeRateFiatSymbol}</T>
-                    <T style={[styles.walletDetailsRowExchangeRate]}>{exchangeRateString}</T>
-                  </View>
-                  <T style={[differencePercentageStringStyle]}>{differencePercentageString}</T>
-                </View>
-              </View>
-              <View style={styles.rowOptionsWrap}>
-                <WalletListRowOptions
-                  currencyCode={walletData.currencyCode}
-                  executeWalletRowOption={walletData.executeWalletRowOption}
-                  walletKey={id}
-                  customStyles={customWalletListOptionsStyles}
-                />
+        <TouchableHighlight
+          style={[styles.rowContainer]}
+          underlayColor={styleRaw.walletRowUnderlay.color}
+          onPress={() => this._onPressSelectWallet(id, currencyCode, walletData.receiveAddress.publicAddress)}
+        >
+          <View style={[styles.rowContent]}>
+            <View style={styles.rowIconWrap}>
+              {symbolImageDarkMono && <Image style={[styles.rowCurrencyLogoAndroid]} source={{ uri: symbolImageDarkMono }} resizeMode="cover" />}
+              <View style={styles.rowCurrencyLogoAndroid}>
+                <ProgressPie size={styles.rowCurrencyOverlaySize} color={'rgba(255, 255, 255, 0.75)'} progress={progress} />
               </View>
             </View>
-          </TouchableOpacity>
-          {this.renderTokenRow(id, enabledNativeBalances, progress)}
-        </View>
+            <View style={styles.walletDetailsContainer}>
+              <View style={styles.walletDetailsRow}>
+                <T style={[styles.walletDetailsRowCurrency]}>{currencyCode}</T>
+                <T style={[styles.walletDetailsRowValue]}>{finalCryptoAmountString}</T>
+              </View>
+              <View style={styles.walletDetailsRow}>
+                <T style={[styles.walletDetailsRowName]}>{name}</T>
+                <View style={styles.walletDetailsFiatBalanceRow}>
+                  <T style={[styles.walletDetailsRowFiat]}>{fiatBalanceSymbol}</T>
+                  <T style={[styles.walletDetailsRowFiat]}>{fiatBalanceString}</T>
+                </View>
+              </View>
+              <View style={styles.walletDetailsRowLine} />
+              <View style={styles.walletDetailsRow}>
+                <View style={styles.walletDetailsExchangeRow}>
+                  <T style={[styles.walletDetailsRowExchangeRate]}>{exchangeRateFiatSymbol}</T>
+                  <T style={[styles.walletDetailsRowExchangeRate]}>{exchangeRateString}</T>
+                </View>
+                <T style={[differencePercentageStringStyle]}>{differencePercentageString}</T>
+              </View>
+            </View>
+            <View style={styles.rowOptionsWrap}>
+              <WalletListRowOptions
+                currencyCode={walletData.currencyCode}
+                executeWalletRowOption={walletData.executeWalletRowOption}
+                walletKey={id}
+                customStyles={customWalletListOptionsStyles}
+              />
+            </View>
+          </View>
+        </TouchableHighlight>
+        {this.renderTokenRow(id, enabledNativeBalances, progress)}
       </Gradient>
     )
   }
@@ -298,13 +296,13 @@ const FullWalletListRowConnected = connect(
 class FullListRowEmptyData extends Component<any> {
   render () {
     return (
-      <TouchableOpacity style={[styles.rowContainer, styles.emptyRow]} underlayColor={styleRaw.emptyRowUnderlay.color}>
+      <TouchableHighlight style={[styles.rowContainer, styles.emptyRow]} underlayColor={styleRaw.emptyRowUnderlay.color}>
         <View style={[styles.rowContent]}>
           <View style={[styles.rowNameTextWrap]}>
-            <ActivityIndicator style={{ height: 18, width: 18 }} color="#F7902F" />
+            <ActivityIndicator style={{ height: 18, width: 18 }} color={'#F7902F'} />
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableHighlight>
     )
   }
 }
