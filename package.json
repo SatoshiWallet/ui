@@ -120,7 +120,7 @@
     "prop-types": "^15.5.10",
     "qrcode-generator": "^1.4.4",
     "react": "16.8.3",
-    "react-native": "0.59.10",
+    "react-native": "0.62.3",
     "react-native-action-button": "^2.8.5",
     "react-native-airship": "^0.1.1",
     "react-native-animatable": "^1.1.0",
